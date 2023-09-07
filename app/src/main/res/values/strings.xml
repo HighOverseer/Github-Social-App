@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">GithubUserAppDicoding</string>
+    <string name="following">Following</string>
+    <string name="followers">Followers</string>
+    <string name="repos">Repositories</string>
+    <string name="username">username</string>
+    <string name="name">Name</string>
+    <string name="hint_search_view">let\'s get to know someone…</string>
+    <string name="user_s_profile">User\'s Profile</string>
+
+    <string name="response_not_success">Terjadi kesalahan pada response..</string>
+    <string name="use_search_bar">Use The Search Bar..</string>
+    <string name="query_blank">Query Kosong..</string>
+    <string name="app_bar_info">\@%1$s</string>
+    <string name="fork_count_info">Forks: %1$s</string>
+    <string name="watcher_count_info">Watchers: %1$s</string>
+    <string name="empty">Empty..</string>
+    <string name="logo">Logo</string>
+    <string name="back_button">Back Button</string>
+    <string name="list_favorites">List Favorites</string>
+    <string name="theme">Theme</string>
+    <string name="list_favorite_info">Showing Favorite List..</string>
+    <string name="list_non_favorite_info">Hiding Favorite List..</string>
+    <string name="added_to_favorite_info">%1$s Added to Favorite List</string>
+    <string name="removed_from_favorite_info">%1$s Removed from Favorite List</string>
+    <string name="search">Search?</string>
+
+    <string-array name="tab_titles">
+        <item>List Repos</item>
+        <item>Followers</item>
+        <item>Following</item>
+    </string-array>
+
+</resources>
