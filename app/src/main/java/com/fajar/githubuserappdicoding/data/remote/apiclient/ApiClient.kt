@@ -21,7 +21,7 @@ object ApiClient {
         return retrofit.create(ApiService::class.java)
     }
 
-    private fun getClient(): OkHttpClient {
+   private fun getClient(): OkHttpClient {
         return OK_HTTP_CLIENT_INSTANCE ?: synchronized(this) {
             val okHttpClient = OkHttpClient.Builder()
                 .addInterceptor(AuthInterceptor())

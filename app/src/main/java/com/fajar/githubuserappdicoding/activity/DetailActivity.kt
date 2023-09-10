@@ -85,15 +85,11 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun getArgs(savedInstanceState: Bundle?): Bundle {
-        return savedInstanceState ?: Bundle().also {
-            it.putString(
-                EXTRA_USER, intent.getStringExtra(EXTRA_USER)
-            )
-        }.apply {
-            getString(EXTRA_USER)?.let {
-                intentUsername = it
-            }
-        }
+        val args = savedInstanceState?:Bundle()
+        args.putString(EXTRA_USER, intent.getStringExtra(EXTRA_USER)?.also {
+            intentUsername = it
+        })
+        return args
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

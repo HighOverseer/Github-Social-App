@@ -7,6 +7,8 @@
     tools:context=".activity.MainActivity">
 
 
+
+
     <com.google.android.material.search.SearchBar
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
