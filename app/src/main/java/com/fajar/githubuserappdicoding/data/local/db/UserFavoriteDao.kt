@@ -22,6 +22,6 @@ interface UserFavoriteDao {
     @Query("DELETE FROM User_Favorite WHERE username = :username")
     suspend fun removeUserFromFav(username: String)
 
-    @Query("SELECT * FROM User_Favorite WHERE username LIKE '%' || :query || '%'")
+    @Query( "SELECT * FROM User_Favorite WHERE username LIKE '%' || :query || '%'")
     fun searchUserInFavorite(query: String): Flow<List<UserFavorite>>
 }
