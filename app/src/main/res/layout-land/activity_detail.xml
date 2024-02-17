@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingHorizontal="16dp"
     android:paddingTop="16dp"
-    tools:context=".activity.DetailActivity">
+    tools:context=".presentation.uiview.DetailActivity">
 
 
     <ImageButton

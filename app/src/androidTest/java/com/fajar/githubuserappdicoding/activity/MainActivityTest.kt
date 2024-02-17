@@ -10,6 +10,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import org.junit.Before
 import org.junit.Test
 import com.fajar.githubuserappdicoding.R
+import com.fajar.githubuserappdicoding.presentation.uiview.MainActivity
 
 class MainActivityTest {
 

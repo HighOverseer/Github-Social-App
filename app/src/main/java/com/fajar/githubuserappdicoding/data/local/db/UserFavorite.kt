@@ -3,7 +3,7 @@ package com.fajar.githubuserappdicoding.data.local.db
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.fajar.githubuserappdicoding.model.UserPreview
+import com.fajar.githubuserappdicoding.domain.model.UserPreview
 
 @Entity("User_Favorite")
 data class UserFavorite(
@@ -14,12 +14,4 @@ data class UserFavorite(
     val avatarUrl: String,
     @ColumnInfo(name = "github_url")
     val githubUrl: String
-) {
-    fun toUserPreview(): UserPreview {
-        return UserPreview(
-            avatarUrl,
-            username,
-            githubUrl
-        )
-    }
-}
+)

@@ -1,6 +1,7 @@
 package com.fajar.githubuserappdicoding.domain
 
 import android.content.Context
+import com.fajar.githubuserappdicoding.domain.common.DynamicString
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
