@@ -3,26 +3,30 @@ package com.fajar.githubuserappdicoding.presentation.uiview
 
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import com.fajar.githubuserappdicoding.R
 import com.fajar.githubuserappdicoding.databinding.ActivityDetailBinding
 import com.fajar.githubuserappdicoding.domain.model.User
 import com.fajar.githubuserappdicoding.presentation.adapter.ViewPagerAdapter
 import com.fajar.githubuserappdicoding.presentation.uistate.DetailUiState
+import com.fajar.githubuserappdicoding.presentation.util.UIEvent
+import com.fajar.githubuserappdicoding.presentation.util.collectChannelFlowOnLifecycleStarted
+import com.fajar.githubuserappdicoding.presentation.util.collectLatestOnLifeCycleStarted
 import com.fajar.githubuserappdicoding.presentation.util.getDrawableRes
 import com.fajar.githubuserappdicoding.presentation.util.loadImage
 import com.fajar.githubuserappdicoding.presentation.util.showToast
 import com.fajar.githubuserappdicoding.presentation.viewmodel.DetailVM
-import com.fajar.githubuserappdicoding.presentation.viewmodel.ViewModelFactory
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
     private lateinit var intentUsername: String
-    private lateinit var vm: DetailVM
+    private val vm: DetailVM by viewModels()
 
     companion object {
         const val EXTRA_USER = "USER"
@@ -32,7 +36,7 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        vm = obtainViewModel(savedInstanceState)
+        //vm = obtainViewModel(savedInstanceState)
 
         setUpViewPager(savedInstanceState)
 
@@ -42,8 +46,12 @@ class DetailActivity : AppCompatActivity() {
         }
 
 
-        vm.uiState.observe(this) { uiState ->
-            setLayout(uiState)
+        collectLatestOnLifeCycleStarted(vm.uiState) {
+            setLayout(it)
+        }
+
+        collectChannelFlowOnLifecycleStarted(vm.uiEvent) {
+            if (it is UIEvent.ToastMessageEvent) showToast(this, it.message)
         }
     }
 
@@ -53,11 +61,6 @@ class DetailActivity : AppCompatActivity() {
             binding.progressBar.isVisible = isLoading
             setProfileLayout(userProfile)
             setIbFavoriteState(isUserFavorite)
-            toastMessage?.let {
-                showToast(
-                    this@DetailActivity, it
-                )
-            }
         }
     }
 
@@ -79,14 +82,14 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun obtainViewModel(savedInstanceState: Bundle?): DetailVM {
+    /*private fun obtainViewModel(savedInstanceState: Bundle?): DetailVM {
         val args = getArgs(savedInstanceState)
         val factory = ViewModelFactory.getInstance(applicationContext, args)
         return ViewModelProvider(this, factory)[DetailVM::class.java]
-    }
+    }*/
 
     private fun getArgs(savedInstanceState: Bundle?): Bundle {
-        val args = savedInstanceState?:Bundle()
+        val args = savedInstanceState ?: Bundle()
         args.putString(EXTRA_USER, intent.getStringExtra(EXTRA_USER)?.also {
             intentUsername = it
         })

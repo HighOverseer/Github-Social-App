@@ -12,16 +12,16 @@ interface Repository {
         FOLLOWER, FOLLOWING
     }
 
-    suspend fun searchUser(query: String): Resource<List<UserPreview>>
+    fun searchUser(query: String): Flow<Resource<List<UserPreview>>>
 
-    suspend fun getDetailUser(username: String): Resource<User>
+    fun getDetailUser(username: String): Flow<Resource<User>>
 
-    suspend fun getListGithubRepos(username: String): Resource<List<GithubRepos>>
+    fun getListGithubRepos(username: String): Flow<Resource<List<GithubRepos>>>
 
-    suspend fun getUserFollowersFollowing(
+    fun getUserFollowersFollowing(
         username: String,
         dataType: DataType
-    ): Resource<List<UserPreview>>
+    ): Flow<Resource<List<UserPreview>>>
 
     fun getListUserFavorites(): Flow<List<UserPreview>>
 

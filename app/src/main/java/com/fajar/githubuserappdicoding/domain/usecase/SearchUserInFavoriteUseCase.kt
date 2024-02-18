@@ -4,5 +4,5 @@ import com.fajar.githubuserappdicoding.domain.model.UserPreview
 import kotlinx.coroutines.flow.Flow
 
 interface SearchUserInFavoriteUseCase {
-    operator fun invoke(query:String = ""): Flow<List<UserPreview>>
+    operator fun invoke(query: String = ""): Flow<List<UserPreview>>
 }

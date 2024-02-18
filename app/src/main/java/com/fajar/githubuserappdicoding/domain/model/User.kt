@@ -1,7 +1,5 @@
 package com.fajar.githubuserappdicoding.domain.model
 
-import com.fajar.githubuserappdicoding.data.local.db.UserFavorite
-
 
 data class User(
     val username: String = "",

@@ -1,6 +1,5 @@
 package com.fajar.githubuserappdicoding.data.remote.response
 
-import com.fajar.githubuserappdicoding.domain.model.User
 import com.google.gson.annotations.SerializedName
 
 data class DetailUserDto(

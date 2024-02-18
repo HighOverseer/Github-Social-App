@@ -1,11 +1,7 @@
 package com.fajar.githubuserappdicoding.data.remote.network
 
 
-import com.fajar.githubuserappdicoding.BuildConfig
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-
+/*
 object ApiClient {
     @Volatile
     private var OK_HTTP_CLIENT_INSTANCE: OkHttpClient? = null
@@ -28,4 +24,4 @@ object ApiClient {
         }.also { OK_HTTP_CLIENT_INSTANCE = it }
     }
 
-}
+}*/

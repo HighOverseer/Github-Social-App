@@ -1,23 +1,33 @@
 package com.fajar.githubuserappdicoding.presentation.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import com.fajar.githubuserappdicoding.domain.common.SingleEvent
-import com.fajar.githubuserappdicoding.domain.data.Repository
+import androidx.lifecycle.viewModelScope
+import com.fajar.githubuserappdicoding.domain.usecase.CheckIsThemeDarkUseCase
+import com.fajar.githubuserappdicoding.presentation.util.UIEvent
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SplashVM(
-    repository: Repository
+@HiltViewModel
+class SplashVM @Inject constructor(
+    checkIsThemeDarkUseCase: CheckIsThemeDarkUseCase
 ) : ViewModel() {
 
-    val themeState = repository.isUsingDarkTheme().distinctUntilChanged().asLiveData()
+    val isDarkThemeFlow = checkIsThemeDarkUseCase()
+        .distinctUntilChanged()
 
-    private val _themeAlreadyChangedEvent = MutableLiveData<SingleEvent<Unit>>()
-    val themeAlreadyChangedEvent: LiveData<SingleEvent<Unit>> = _themeAlreadyChangedEvent
+    private val _uiEvent = Channel<UIEvent>()
+    val uiEvent = _uiEvent.receiveAsFlow()
 
-    fun setThemeEvent() {
-        _themeAlreadyChangedEvent.value = SingleEvent(Unit)
+    private var sendEventJob: Job? = null
+    fun sendEvent(event: UIEvent) {
+        sendEventJob?.cancel()
+        sendEventJob = viewModelScope.launch {
+            _uiEvent.send(event)
+        }
     }
 }

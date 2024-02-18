@@ -1,16 +1,9 @@
-
 package com.fajar.githubuserappdicoding.presentation.viewmodel
 
 /*
-import android.content.Context
-import android.os.Bundle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.fajar.githubuserappdicoding.di.Injection
-
 class ViewModelFactory private constructor(
     private val applicationContext: Context,
-    private var args: Bundle? = null
+    //private var args: Bundle? = null
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
@@ -60,4 +53,5 @@ class ViewModelFactory private constructor(
             }.also { INSTANCE = it }
         }
     }
-}*/
+}
+*/

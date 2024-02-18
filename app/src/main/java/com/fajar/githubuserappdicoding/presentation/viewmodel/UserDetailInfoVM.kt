@@ -1,88 +1,110 @@
 package com.fajar.githubuserappdicoding.presentation.viewmodel
 
-import android.os.Bundle
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fajar.githubuserappdicoding.domain.common.DynamicString
 import com.fajar.githubuserappdicoding.domain.common.Resource
-import com.fajar.githubuserappdicoding.domain.common.SingleEvent
 import com.fajar.githubuserappdicoding.domain.data.Repository
+import com.fajar.githubuserappdicoding.domain.model.UserDetailInfo
+import com.fajar.githubuserappdicoding.domain.usecase.GetUserReposOrFollowingOrFollowerUseCase
 import com.fajar.githubuserappdicoding.presentation.uistate.UserDetailInfoUiState
 import com.fajar.githubuserappdicoding.presentation.uiview.DetailActivity
 import com.fajar.githubuserappdicoding.presentation.uiview.UserDetailInfoFragment
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.net.SocketTimeoutException
+import com.fajar.githubuserappdicoding.presentation.util.UIEvent
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.stateIn
+import javax.inject.Inject
 
-class UserDetailInfoVM(
-    private var repository: Repository,
-    args: Bundle
+@HiltViewModel
+class UserDetailInfoVM @Inject constructor(
+    getUserReposOrFollowingOrFollowerUseCase: GetUserReposOrFollowingOrFollowerUseCase,
+    savedStateHandle: SavedStateHandle
+    //args: Bundle
 ) : ViewModel() {
 
-    private val _uiState = MutableLiveData(UserDetailInfoUiState())
-    val uiState: LiveData<UserDetailInfoUiState> = _uiState
+    private val username =
+        savedStateHandle.get<String>(DetailActivity.EXTRA_USER)
+            ?: throw Exception("Terjadi Kesalahan..")
+    private val pos = savedStateHandle.get<Int>(UserDetailInfoFragment.EXTRA_POSITION)
+        ?: throw Exception("Terjadi Kesalahan..")
 
-    private fun getData(args: Bundle) {
-        viewModelScope.launch {
-            val username = args.getString(DetailActivity.EXTRA_USER) ?: return@launch
-            val pos = args.getInt(UserDetailInfoFragment.EXTRA_POSITION)
-            _uiState.value = _uiState.value?.copy(isLoading = true)
-            val res = when (pos) {
-                FragmentPos.GithubRepos.pos -> {
-                    repository.getListGithubRepos(username)
-                }
+    private val _uiEvent = Channel<UIEvent>()
+    val uiEvent = _uiEvent.receiveAsFlow()
 
-                FragmentPos.Followers.pos -> {
-                    repository.getUserFollowersFollowing(username, Repository.DataType.FOLLOWER)
-                }
+    val uiState =
+        getUserReposOrFollowingOrFollowerUseCase(username, getType(pos)).map { res ->
+            setData(res)
+        }.flowOn(Dispatchers.Default).stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000L),
+            UserDetailInfoUiState(isLoading = true)
+        )
 
-                FragmentPos.Following.pos -> {
-                    repository.getUserFollowersFollowing(username, Repository.DataType.FOLLOWING)
-                }
 
-                else -> return@launch
-            }
-            when (res) {
-                is Resource.Success -> {
-                    _uiState.value = _uiState.value?.copy(
-                        listItems = res.data,
-                        isLoading = false
-                    )
-                }
-
-                is Resource.Failure -> {
-                    _uiState.value = _uiState.value?.copy(
-                        toastMessage = SingleEvent(res.message),
-                        isLoading = false
-                    )
-                }
-
-                is Resource.Error -> {
-                    _uiState.value = _uiState.value?.copy(
-                        toastMessage = SingleEvent(
-                            DynamicString(res.e.message.toString())
-                        ),
-                        isLoading = false
-                    )
-                    if (res.e is HttpException || res.e is SocketTimeoutException) {
-                        delay(5000L)
-                        getData(args)
-                    }
-                }
+    private fun getType(pagePosition: Int): Repository.DataType? {
+        return when (pagePosition) {
+            FragmentPos.GithubRepos.pos -> {
+                null
             }
 
+            FragmentPos.Followers.pos -> {
+                Repository.DataType.FOLLOWER
+            }
+
+            FragmentPos.Following.pos -> {
+                Repository.DataType.FOLLOWING
+            }
+
+            else -> throw Exception("Terjadi Kesalahan..")
+        }
+    }
+
+    private suspend fun setData(resource: Resource<List<UserDetailInfo>>): UserDetailInfoUiState {
+        return when (resource) {
+            is Resource.Success -> {
+                uiState.value.copy(
+                    listItems = resource.data,
+                    isLoading = false
+                )
+            }
+
+            is Resource.Failure -> {
+                _uiEvent.send(
+                    UIEvent.ToastMessageEvent(
+                        resource.message
+                    )
+                )
+                uiState.value.copy(
+                    isLoading = false
+                )
+            }
+
+            is Resource.Error -> {
+                _uiEvent.send(
+                    UIEvent.ToastMessageEvent(
+                        DynamicString(resource.e.message.toString())
+                    )
+                )
+                uiState.value.copy(
+                    isLoading = false
+                )
+                /*if (res.e is HttpException || res.e is SocketTimeoutException) {
+                    delay(5000L)
+                    getData(args)
+                }*/
+            }
         }
     }
 
     enum class FragmentPos(val pos: Int) {
         GithubRepos(0), Followers(1), Following(2)
-    }
-
-    init {
-        getData(args)
     }
 
 }

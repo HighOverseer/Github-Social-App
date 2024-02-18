@@ -5,5 +5,5 @@ import com.fajar.githubuserappdicoding.domain.model.UserPreview
 import kotlinx.coroutines.flow.Flow
 
 interface SearchUserUseCase {
-    suspend operator fun invoke(query:String = ""): Resource<List<UserPreview>>
+    suspend operator fun invoke(query: String = ""): Flow<Resource<List<UserPreview>>>
 }

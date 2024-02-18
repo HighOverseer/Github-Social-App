@@ -8,16 +8,15 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
 
     @Binds
-    abstract fun provideRepository(repositoryImpl: RepositoryImpl):Repository
+    abstract fun provideRepository(repositoryImpl: RepositoryImpl): Repository
 
     @Binds
-    abstract fun provideUserPreference(settingPreferenceImpl: SettingPreferenceImpl):SettingPreference
+    abstract fun provideUserPreference(settingPreferenceImpl: SettingPreferenceImpl): SettingPreference
 
 }

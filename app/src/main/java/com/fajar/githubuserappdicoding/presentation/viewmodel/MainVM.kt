@@ -1,32 +1,6 @@
 package com.fajar.githubuserappdicoding.presentation.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
-import com.fajar.githubuserappdicoding.R
-import com.fajar.githubuserappdicoding.domain.common.DynamicString
-import com.fajar.githubuserappdicoding.domain.common.Resource
-import com.fajar.githubuserappdicoding.domain.common.SingleEvent
-import com.fajar.githubuserappdicoding.domain.common.StaticString
-import com.fajar.githubuserappdicoding.domain.data.Repository
-import com.fajar.githubuserappdicoding.domain.usecase.ChangeThemePrefUseCase
-import com.fajar.githubuserappdicoding.domain.usecase.CheckIsThemeDarkUseCase
-import com.fajar.githubuserappdicoding.domain.usecase.SearchUserInFavoriteUseCase
-import com.fajar.githubuserappdicoding.domain.usecase.SearchUserUseCase
-import com.fajar.githubuserappdicoding.presentation.uiaction.MainUiAction
-import com.fajar.githubuserappdicoding.presentation.uistate.FavoriteState
-import com.fajar.githubuserappdicoding.presentation.uistate.MainUIState
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.job
-import kotlinx.coroutines.launch
-import javax.inject.Inject
-
+/*
 @HiltViewModel
 class MainVM @Inject constructor(
     private val searchUserUseCase: SearchUserUseCase,
@@ -41,7 +15,7 @@ class MainVM @Inject constructor(
 
     private var currListFavoriteLiveData = searchUserInFavoriteUseCase().asLiveData()
 
-    val themeState = checkIsThemeDarkUseCase()
+    val themeState = checkIsThemeDarkUseCase().asLiveData()
 
     private val _uiState = MediatorLiveData<MainUIState>()
     val uiState: LiveData<MainUIState> = _uiState
@@ -49,7 +23,7 @@ class MainVM @Inject constructor(
 
     private var job: Job? = null
 
-    private val completionHandler = { cause:Throwable? ->
+    private val completionHandler = { cause: Throwable? ->
         if (cause != null) {
             _uiState.value = _uiState.value?.copy(isLoading = false)
         }
@@ -64,10 +38,11 @@ class MainVM @Inject constructor(
 
             is MainUiAction.SearchingUser -> {
                 job?.cancel()
-                job  = searchUser(
+                job = searchUser(
                     action.chunkedQuery, DELAY_MILLIS
                 )
             }
+
             MainUiAction.ClearSearchList -> {
                 job?.cancel()
                 val currIsInFavoriteList =
@@ -199,7 +174,7 @@ class MainVM @Inject constructor(
                 )
             }
         } else {
-            when (val res = searchUserUseCase(query)) {
+            when (val res = searchUserUseCase(query).first()) {
                 is Resource.Success -> {
                     _uiState.value = uiState.value?.copy(
                         listUserPreview = res.data,
@@ -225,10 +200,12 @@ class MainVM @Inject constructor(
                         ),
                         isLoading = false
                     )
-                    /*if (res.e is HttpException || res.e is SocketTimeoutException) {
+                    */
+/*if (res.e is HttpException || res.e is SocketTimeoutException) {
                         delay(5000L)
                         sendAction(MainUiAction.SearchUser(query))
-                    }*/
+                    }*//*
+
                 }
             }
 
@@ -241,4 +218,4 @@ class MainVM @Inject constructor(
     }
 
 
-}
+}*/

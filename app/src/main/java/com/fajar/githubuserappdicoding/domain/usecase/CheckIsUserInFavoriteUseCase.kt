@@ -4,5 +4,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface CheckIsUserInFavoriteUseCase {
 
-    operator fun invoke(username:String):Flow<Boolean>
+    operator fun invoke(username: String): Flow<Boolean>
 }

@@ -2,7 +2,8 @@ package com.fajar.githubuserappdicoding.domain.usecase
 
 import com.fajar.githubuserappdicoding.domain.common.Resource
 import com.fajar.githubuserappdicoding.domain.model.User
+import kotlinx.coroutines.flow.Flow
 
-interface GetDetailUserUseCase{
-    suspend operator fun invoke(username:String):Resource<User>
+interface GetDetailUserUseCase {
+    operator fun invoke(username: String): Flow<Resource<User>>
 }

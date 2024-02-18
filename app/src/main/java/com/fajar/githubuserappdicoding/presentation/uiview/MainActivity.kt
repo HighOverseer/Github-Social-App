@@ -10,9 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.PopupWindow
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fajar.githubuserappdicoding.R
 import com.fajar.githubuserappdicoding.databinding.ActivityMainBinding
@@ -22,43 +23,68 @@ import com.fajar.githubuserappdicoding.presentation.adapter.UserAdapter
 import com.fajar.githubuserappdicoding.presentation.uiaction.MainUiAction
 import com.fajar.githubuserappdicoding.presentation.uistate.FavoriteState
 import com.fajar.githubuserappdicoding.presentation.uistate.MainUIState
+import com.fajar.githubuserappdicoding.presentation.util.UIEvent
 import com.fajar.githubuserappdicoding.presentation.util.changeTheme
 import com.fajar.githubuserappdicoding.presentation.util.checkIsUsingDarkTheme
+import com.fajar.githubuserappdicoding.presentation.util.collectChannelFlowOnLifecycleStarted
+import com.fajar.githubuserappdicoding.presentation.util.collectLatestOnLifeCycleStarted
 import com.fajar.githubuserappdicoding.presentation.util.getDrawableRes
+import com.fajar.githubuserappdicoding.presentation.util.makeToast
 import com.fajar.githubuserappdicoding.presentation.util.showToast
 import com.fajar.githubuserappdicoding.presentation.util.toDp
-import com.fajar.githubuserappdicoding.presentation.viewmodel.MainVM
-import com.fajar.githubuserappdicoding.presentation.viewmodel.ViewModelFactory
+import com.fajar.githubuserappdicoding.presentation.viewmodel.MainViewModel
 import com.google.android.material.R.id.open_search_view_clear_button
 import com.google.android.material.search.SearchView
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var vm: MainVM
+    private val vm: MainViewModel by viewModels()
 
     private val onItemGetClicked = ::toDetailAct
     private var popUpBinding: SwitchMenuLayoutBinding? = null
     private var popupWindow: PopupWindow? = null
+    private var toastMessage: Toast? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        vm = obtainViewModel()
+        //vm = obtainViewModel()
 
-        vm.themeState.observe(this) { isDarkTheme ->
+        /*vm.themeState.observe(this) { isDarkTheme ->
+            val isAlreadyDarkTheme = checkIsUsingDarkTheme(resources)
+            if (isDarkTheme != isAlreadyDarkTheme) {
+                changeTheme(isDarkTheme)
+            }
+        }*/
+        collectLatestOnLifeCycleStarted(vm.themeState) { isDarkTheme ->
             val isAlreadyDarkTheme = checkIsUsingDarkTheme(resources)
             if (isDarkTheme != isAlreadyDarkTheme) {
                 changeTheme(isDarkTheme)
             }
         }
 
+        collectChannelFlowOnLifecycleStarted(vm.uiEvent) {
+            if (it is UIEvent.ToastMessageEvent) {
+                toastMessage?.cancel()
+                toastMessage = makeToast(this, it.message)
+                toastMessage?.show()
+            }
+        }
+
+
         setUpComponents()
 
-        vm.uiState.observe(this) { uiState ->
+        /*vm.uiState.observe(this) { uiState ->
             setLayout(uiState)
+        }*/
+        collectLatestOnLifeCycleStarted(vm.uiState) {
+            setLayout(it)
         }
+
 
     }
 
@@ -103,7 +129,7 @@ class MainActivity : AppCompatActivity() {
                         vm.sendAction(MainUiAction.SearchUser(query))
                         clearFocusAndHideKeyboard()
                     } else {
-                        searchView.text?.clear()
+                        searchView.text.clear()
                         searchView.hide()
                         showToast(
                             this@MainActivity,
@@ -160,7 +186,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onRestart() {
         super.onRestart()
-        vm.sendAction(MainUiAction.RestoreJobRes)
+        //vm.sendAction(MainUiAction.RestoreJobRes)
     }
 
     private fun setLayout(uiState: MainUIState?) {
@@ -174,9 +200,9 @@ class MainActivity : AppCompatActivity() {
                     setRv(emptyList())
                 } else setRv(listUserPreview)
                 tvEmptyInfo.isVisible = !isLoading && listUserPreview.isEmpty()
-                toastMessage?.let {
+                /*toastMessage?.let {
                     showToast(this@MainActivity, it)
-                }
+                }*/
             }
         }
     }
@@ -185,7 +211,7 @@ class MainActivity : AppCompatActivity() {
         favoriteState.toggleSingleEvent.getContentIfNotHandled()?.let { isToggled ->
             if (isToggled) {
                 binding.searchView.apply {
-                    text?.clear()
+                    text.clear()
                     toolbar.collapseActionView()
                     clearFocusAndHideKeyboard()
                 }
@@ -219,10 +245,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun obtainViewModel(): MainVM {
-        val viewModelFactory = ViewModelFactory.getInstance(applicationContext)
-        return ViewModelProvider(this, viewModelFactory)[MainVM::class.java]
-    }
+    /*   private fun obtainViewModel(): MainVM {
+           val viewModelFactory = ViewModelFactory.getInstance(applicationContext)
+           return ViewModelProvider(this, viewModelFactory)[MainVM::class.java]
+       }*/
 
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
@@ -240,9 +266,9 @@ class MainActivity : AppCompatActivity() {
     private fun toDetailAct(username: String) {
         val intent = Intent(this, DetailActivity::class.java)
         intent.putExtra(DetailActivity.EXTRA_USER, username)
-        vm.sendAction(
+        /*vm.sendAction(
             MainUiAction.ClickUser
-        )
+        )*/
         startActivity(intent)
     }
 

@@ -4,7 +4,6 @@ import com.fajar.githubuserappdicoding.data.remote.response.DetailUserDto
 import com.fajar.githubuserappdicoding.data.remote.response.GithubReposDto
 import com.fajar.githubuserappdicoding.data.remote.response.SearchUserDto
 import com.fajar.githubuserappdicoding.data.remote.response.UserModelDto
-import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

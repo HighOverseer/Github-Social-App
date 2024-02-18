@@ -1,103 +1,121 @@
 package com.fajar.githubuserappdicoding.presentation.viewmodel
 
-import android.os.Bundle
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.fajar.githubuserappdicoding.R
 import com.fajar.githubuserappdicoding.domain.common.DynamicString
 import com.fajar.githubuserappdicoding.domain.common.Resource
-import com.fajar.githubuserappdicoding.domain.common.SingleEvent
-import com.fajar.githubuserappdicoding.domain.common.StaticString
-import com.fajar.githubuserappdicoding.domain.data.Repository
-import com.fajar.githubuserappdicoding.domain.mapper.DataMapper
+import com.fajar.githubuserappdicoding.domain.model.User
 import com.fajar.githubuserappdicoding.domain.usecase.CheckIsUserInFavoriteUseCase
 import com.fajar.githubuserappdicoding.domain.usecase.GetDetailUserUseCase
 import com.fajar.githubuserappdicoding.domain.usecase.ToggleFavoriteStatusUseCase
 import com.fajar.githubuserappdicoding.presentation.uistate.DetailUiState
 import com.fajar.githubuserappdicoding.presentation.uiview.DetailActivity
+import com.fajar.githubuserappdicoding.presentation.util.UIEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.net.SocketTimeoutException
 import javax.inject.Inject
 
 @HiltViewModel
 class DetailVM @Inject constructor(
-    private val getDetailUserUseCase: GetDetailUserUseCase,
     private val toggleFavoriteStatusUseCase: ToggleFavoriteStatusUseCase,
+    getDetailUserUseCase: GetDetailUserUseCase,
     checkIsUserInFavoriteUseCase: CheckIsUserInFavoriteUseCase,
-    args: Bundle
+    savedStateHandle: SavedStateHandle
+    //args: save
 ) : ViewModel() {
 
-    private val username = args.getString(DetailActivity.EXTRA_USER) ?: throw Exception("Terjadi Kesalahan..")
+    private val username = savedStateHandle.get<String>(DetailActivity.EXTRA_USER)
+        ?: throw Exception("Terjadi Kesalahan..")
 
-    private val _uiState = MediatorLiveData(DetailUiState())
-    val uiState: LiveData<DetailUiState> = _uiState
+    private val _uiEvent = Channel<UIEvent>()
+    val uiEvent = _uiEvent.receiveAsFlow()
 
-    private val isUserFavoriteStatus = checkIsUserInFavoriteUseCase(username)
-        .asLiveData()
+    val uiState: StateFlow<DetailUiState> = combine(
+        getDetailUserUseCase(username),
+        checkIsUserInFavoriteUseCase(username)
+    ) { resDetailUser, isFavorite ->
+        setUserProfile(resDetailUser, isFavorite)
+    }.flowOn(Dispatchers.Default).stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5000L),
+        DetailUiState(isLoading = true)
+    )
 
-    private fun getUserProfile(args: Bundle) {
-        viewModelScope.launch {
-            _uiState.value = _uiState.value?.copy(isLoading = true)
-            when (val res = getDetailUserUseCase(username)) {
-                is Resource.Success -> {
-                    _uiState.value = _uiState.value?.copy(
-                        userProfile = res.data,
-                        isLoading = false,
-                    )
-                }
-
-                is Resource.Failure -> {
-                    _uiState.value = _uiState.value?.copy(
-                        toastMessage = SingleEvent(res.message),
-                        isLoading = false
-                    )
-                }
-
-                is Resource.Error -> {
-                    _uiState.value = _uiState.value?.copy(
-                        toastMessage = SingleEvent(
-                            DynamicString(res.e.message.toString())
-                        ),
-                        isLoading = false
-                    )
-                    if (res.e is HttpException || res.e is SocketTimeoutException) {
-                        delay(5000L)
-                        getUserProfile(args)
-                    }
-                }
+    private suspend fun setUserProfile(
+        resourceDetailUser: Resource<User>,
+        isUserFavorite: Boolean
+    ): DetailUiState {
+        return when (resourceDetailUser) {
+            is Resource.Success -> {
+                uiState.value.copy(
+                    userProfile = resourceDetailUser.data,
+                    isLoading = false,
+                    isUserFavorite = isUserFavorite
+                )
             }
+
+            is Resource.Failure -> {
+                sendEvent(
+                    UIEvent.ToastMessageEvent(
+                        resourceDetailUser.message
+                    )
+                )
+
+                uiState.value.copy(
+                    isLoading = false,
+                    isUserFavorite = isUserFavorite
+                )
+            }
+
+            is Resource.Error -> {
+                sendEvent(
+                    UIEvent.ToastMessageEvent(
+                        DynamicString(resourceDetailUser.e.message.toString())
+                    )
+                )
+
+                uiState.value.copy(
+                    isLoading = false,
+                    isUserFavorite = isUserFavorite
+                )
+                /*if (res.e is HttpException || res.e is SocketTimeoutException) {
+                    delay(5000L)
+                    getUserProfile(args)
+                }*/
+            }
+        }
+    }
+
+    private suspend fun sendEvent(uiEvent: UIEvent) {
+        val isEventSent = !uiState.value.isLoading
+
+        if (!isEventSent) {
+            _uiEvent.send(uiEvent)
         }
     }
 
     fun toggleFavoriteStatus() {
         viewModelScope.launch(Dispatchers.IO) {
-            val currUiState = _uiState.value ?: return@launch
-            val toastMessage = toggleFavoriteStatusUseCase(
-                currUiState.userProfile,
-                currUiState.isUserFavorite
-            )
-            _uiState.postValue(
-                _uiState.value?.copy(
-                    toastMessage = toastMessage
+            val currUiState = uiState.value
+            _uiEvent.send(
+                UIEvent.ToastMessageEvent(
+                    toggleFavoriteStatusUseCase(
+                        currUiState.userProfile,
+                        currUiState.isUserFavorite
+                    )
                 )
             )
+
         }
     }
 
-    init {
-        _uiState.addSource(isUserFavoriteStatus){
-            _uiState.value = _uiState.value?.copy(isUserFavorite = it)
-        }
-        getUserProfile(args)
-
-    }
 }
