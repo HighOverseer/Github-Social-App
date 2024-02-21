@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">GithubUserAppDicoding</string>
+    <string name="username">username</string>
+    <string name="name">Name</string>
+    <string name="response_not_success">Terjadi kesalahan pada response..</string>
+    <string name="logo">Logo</string>
+</resources>

@@ -1,0 +1,10 @@
+<resources>
+    <string name="query_blank">Query Kosong..</string>
+    <string name="list_favorite_info">Showing Favorite List..</string>
+    <string name="list_non_favorite_info">Hiding Favorite List..</string>
+    <string name="search">Search?</string>
+    <string name="theme">Theme</string>
+    <string name="hint_search_view">let\'s get to know someone…</string>
+    <string name="list_favorites">List Favorites</string>
+    <string name="title_list_user_and_user_favorite">List User And User Favorite</string>
+</resources>

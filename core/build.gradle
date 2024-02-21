@@ -1,0 +1,56 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id "com.google.devtools.ksp"
+    id "dagger.hilt.android.plugin"
+    id "kotlin-kapt"
+}
+
+apply from: '../shared_dependencies.gradle'
+
+android {
+    namespace 'com.fajar.githubuserappdicoding.core'
+    compileSdk 34
+
+    defaultConfig {
+        minSdk 24
+        buildConfigField("String", "BASE_URL", '"https://api.github.com/"')
+        buildConfigField("String", "API_TOKEN", '"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"')
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+
+    buildFeatures{
+        viewBinding = true
+        buildConfig = true
+    }
+}
+
+dependencies {
+    def retrofitVersion = "2.9.0"
+    implementation "androidx.room:room-runtime:2.6.1"
+    ksp "androidx.room:room-compiler:2.6.1"
+    implementation "androidx.room:room-ktx:2.6.1"
+
+    /* def lifecycle_version = "2.7.0"
+     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"*/
+
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.9.0"
+}

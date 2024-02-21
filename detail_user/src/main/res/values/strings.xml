@@ -1,0 +1,19 @@
+<resources>
+    <string-array name="tab_titles">
+        <item>List Repos</item>
+        <item>Followers</item>
+        <item>Following</item>
+    </string-array>
+
+    <string name="app_bar_info">\@%1$s</string>
+    <string name="fork_count_info">Forks: %1$s</string>
+    <string name="watcher_count_info">Watchers: %1$s</string>
+    <string name="user_s_profile">User\'s Profile</string>
+    <string name="repos">Repositories</string>
+    <string name="back_button">Back Button</string>
+    <string name="following">Following</string>
+    <string name="followers">Followers</string>
+    <string name="empty">Empty..</string>
+    <string name="added_to_favorite_info">%1$s Added to Favorite List</string>
+    <string name="removed_from_favorite_info">%1$s Removed from Favorite List</string>
+</resources>
