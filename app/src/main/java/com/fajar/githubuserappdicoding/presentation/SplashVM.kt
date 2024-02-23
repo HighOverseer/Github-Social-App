@@ -1,9 +1,9 @@
-package com.fajar.githubuserappdicoding
+package com.fajar.githubuserappdicoding.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.fajar.githubuserappdicoding.core.presentation.UIEvent
 import com.fajar.githubuserappdicoding.core.domain.usecase.CheckIsThemeDarkUseCase
+import com.fajar.githubuserappdicoding.core.presentation.UIEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.fajar.githubuserappdicoding">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".MyApplication"
@@ -17,7 +17,7 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
         <activity
-            android:name=".Splash"
+            android:name=".presentation.Splash"
             android:exported="true"
             android:theme="@style/SplashTheme">
             <intent-filter>
@@ -25,9 +25,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<!--        <activity
-            android:name=".presentation.uiview.DetailActivity"
-            android:exported="false" />-->
+        <!--        <activity
+                    android:name=".presentation.uiview.DetailActivity"
+                    android:exported="false" />-->
     </application>
 
 </manifest>

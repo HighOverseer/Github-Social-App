@@ -2,18 +2,17 @@ package com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.fajar.githubuserappdicoding.core.presentation.UIEvent
 import com.fajar.githubuserappdicoding.core.domain.common.DynamicString
 import com.fajar.githubuserappdicoding.core.domain.common.Resource
 import com.fajar.githubuserappdicoding.core.domain.common.StaticString
-import com.fajar.githubuserappdicoding.list_user_and_user_favorite.domain.usecase.ChangeThemePrefUseCase
 import com.fajar.githubuserappdicoding.core.domain.usecase.CheckIsThemeDarkUseCase
+import com.fajar.githubuserappdicoding.core.presentation.UIEvent
 import com.fajar.githubuserappdicoding.list_user_and_user_favorite.R
+import com.fajar.githubuserappdicoding.list_user_and_user_favorite.domain.usecase.ChangeThemePrefUseCase
 import com.fajar.githubuserappdicoding.list_user_and_user_favorite.domain.usecase.SearchUserUseCase
 import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.uiaction.MainUiAction
 import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.uistate.FavoriteState
 import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.uistate.MainUIState
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.NonCancellable
@@ -43,8 +42,6 @@ class MainViewModel @Inject constructor(
         private const val DELAY_MILLIS = 500L
     }
 
-    private val lock = Any()
-
     val themeState = checkIsThemeDarkUseCase()
         .distinctUntilChanged()
 
@@ -56,6 +53,7 @@ class MainViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(MainUIState())
     val uiState: StateFlow<MainUIState> = _uiState
+
     fun sendAction(action: MainUiAction) {
         sendActionJob?.cancel()
         sendActionJob = viewModelScope.launch {
@@ -103,18 +101,15 @@ class MainViewModel @Inject constructor(
                     )
                 )
             }
-
-            onSearchResult(true, "")
-            /*_uiState.emitAll(
+            _uiState.emitAll(
                 onSearchResult(true, "")
-            )*/
+            )
         } else {
             _uiState.update {
                 MainUIState(
                     query = "",
                     isLoading = false,
                     listUserPreview = emptyList(),
-                    //toastMessage = null,
                     favoriteState = FavoriteState(
                         newIsFavoriteList = false,
                         oldIsFavoriteList = false
@@ -132,53 +127,30 @@ class MainViewModel @Inject constructor(
 
     private suspend fun changeListUserSource() {
         val newIsInFavoriteList = !_uiState.value.favoriteState.newIsFavoriteList
-
         if (newIsInFavoriteList) {
-
             _uiEvent.send(
                 UIEvent.ToastMessageEvent(
                     StaticString(R.string.list_favorite_info)
                 )
             )
-
-
             _uiState.update {
                 MainUIState(
-                    query = "",
-                    listUserPreview = emptyList(),
                     isLoading = true,
-                    /*toastMessage = SingleEvent(
-                        StaticString(R.string.list_favorite_info)
-                    ),*/
                     favoriteState = FavoriteState(
                         newIsFavoriteList = true,
                         oldIsFavoriteList = false
                     )
                 )
             }
-            val stateSnapshot = uiState.value
-            println("after ChangeListSource : State : { query: ${stateSnapshot.query}, isLoading : ${stateSnapshot.isLoading},  oldFav : ${stateSnapshot.favoriteState.oldIsFavoriteList}, newFav: ${stateSnapshot.favoriteState.newIsFavoriteList}")
-
-            /*if (!uiState.value.favoriteState.toggleSingleEvent.hasBeenHandled){
-                delay(100)
-            }
-
-            onSearchResult(true, "")*/
-            /*_uiState.emitAll(
-                onSearchResult(true, "")
-            )*/
         } else {
             _uiEvent.send(
                 UIEvent.ToastMessageEvent(
                     StaticString(R.string.list_non_favorite_info)
                 )
             )
-
             _uiState.update {
                 MainUIState(
-                    /*toastMessage = SingleEvent(
-                        StaticString(R.string.list_non_favorite_info)
-                    ),*/
+                    isLoading = false,
                     favoriteState = FavoriteState(
                         newIsFavoriteList = false,
                         oldIsFavoriteList = true
@@ -199,49 +171,34 @@ class MainViewModel @Inject constructor(
         }
 
         val currIsInFavoriteList = _uiState.value.favoriteState.newIsFavoriteList
-        onSearchResult(currIsInFavoriteList, query)
-        /*_uiState.emitAll(
+
+        _uiState.emitAll(
             onSearchResult(currIsInFavoriteList, query)
-        )*/
+        )
     }
 
-    private suspend fun onSearchResult(isInFavoriteList: Boolean, query: String = "")/*: Flow<MainUIState>*/ {
-        searchUserUseCase(isInFavoriteList, query).collectLatest { res ->
+    private fun onSearchResult(isInFavoriteList: Boolean, query: String = ""): Flow<MainUIState> {
+        return searchUserUseCase(isInFavoriteList, query).map { res ->
             when (res) {
                 is Resource.Success -> {
-                    _uiState.update {
-                        it.copy(
-                            listUserPreview = res.data,
-                            isLoading = false,
-                            favoriteState = FavoriteState(
-                                newIsFavoriteList = isInFavoriteList,
-                                oldIsFavoriteList = isInFavoriteList
-                            )
-                        ).also { state ->
-                            println("onSearchResult : State : { query: ${state.query}, isLoading : ${state.isLoading}, oldFav : ${state.favoriteState.oldIsFavoriteList}, newFav: ${state.favoriteState.newIsFavoriteList}")
-                        }
-                    }
-                    /*uiState.value.copy(
+                    println(res.data)
+                    uiState.value.copy(
                         listUserPreview = res.data,
                         isLoading = false,
                         favoriteState = FavoriteState(
                             newIsFavoriteList = isInFavoriteList,
                             oldIsFavoriteList = isInFavoriteList
                         )
-                    )*/
+                    )
                 }
 
                 is Resource.Failure -> {
                     _uiEvent.send(
                         UIEvent.ToastMessageEvent(res.message)
                     )
-                    _uiState.update {
-                        it.copy(isLoading = false)
-                    }
-                    /*uiState.value.copy(
-                        *//*toastMessage = SingleEvent(res.message)*//*
+                    uiState.value.copy(
                         isLoading = false
-                    )*/
+                    )
                 }
 
                 is Resource.Error -> {
@@ -250,16 +207,9 @@ class MainViewModel @Inject constructor(
                             DynamicString(res.e.message.toString())
                         )
                     )
-
-                    _uiState.update {
-                        it.copy(isLoading = false)
-                    }
-                    /*uiState.value.copy(
-//                        toastMessage = SingleEvent(
-//                            DynamicString(res.e.message.toString())
-//                        ),
+                    uiState.value.copy(
                         isLoading = false
-                    )*/
+                    )
                 }
             }
         }

@@ -1,10 +1,10 @@
 package com.fajar.githubuserappdicoding.detail_user.di
 
 import android.content.Context
-import com.fajar.githubuserappdicoding.DetailUserModuleDependencies
+import com.fajar.githubuserappdicoding.di.DetailUserModuleDependencies
 import dagger.hilt.android.EntryPointAccessors
 
-fun initDI(context: Context):DetailUserComponent{
+fun initDI(context: Context): DetailUserComponent {
     return DaggerDetailUserComponent.builder()
         .context(context)
         .appDependencies(

@@ -1,16 +1,13 @@
-package com.fajar.githubuserappdicoding
+package com.fajar.githubuserappdicoding.di
 
 import com.fajar.githubuserappdicoding.core.domain.data.Repository
-import com.fajar.githubuserappdicoding.core.domain.usecase.CheckIsThemeDarkUseCase
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
 @EntryPoint
 @InstallIn(SingletonComponent::class)
-interface ListUserModuleDependencies {
+interface DetailUserModuleDependencies {
     fun repository(): Repository
-
-    fun usecase():CheckIsThemeDarkUseCase
 
 }

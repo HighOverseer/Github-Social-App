@@ -1,16 +1,19 @@
 package com.fajar.githubuserappdicoding.domain
 
 import android.content.Context
-import com.fajar.githubuserappdicoding.domain.common.DynamicString
-import org.junit.Assert.*
+import com.fajar.githubuserappdicoding.core.domain.common.DynamicString
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
+import org.mockito.Mock
 import org.mockito.Mockito.mock
 
 
 class StringResTest {
 
     private val dummyStringVal = "Test"
+
+    @Mock
     private lateinit var context: Context
 
     @Before

@@ -1,17 +1,17 @@
 package com.fajar.githubuserappdicoding.core.data
 
-import com.fajar.githubuserappdicoding.core.domain.common.DynamicString
-import com.fajar.githubuserappdicoding.core.domain.model.GithubRepos
 import com.fajar.githubuserappdicoding.core.R
-import com.fajar.githubuserappdicoding.core.domain.common.Resource
-import com.fajar.githubuserappdicoding.core.domain.data.SettingPreference
-import com.fajar.githubuserappdicoding.core.domain.common.StaticString
-import com.fajar.githubuserappdicoding.core.domain.model.User
 import com.fajar.githubuserappdicoding.core.data.local.db.UserFavoriteDao
-import com.fajar.githubuserappdicoding.core.domain.model.UserPreview
 import com.fajar.githubuserappdicoding.core.data.remote.network.ApiService
-import com.fajar.githubuserappdicoding.core.domain.mapper.DataMapper
+import com.fajar.githubuserappdicoding.core.domain.common.DynamicString
+import com.fajar.githubuserappdicoding.core.domain.common.Resource
+import com.fajar.githubuserappdicoding.core.domain.common.StaticString
 import com.fajar.githubuserappdicoding.core.domain.data.Repository
+import com.fajar.githubuserappdicoding.core.domain.data.SettingPreference
+import com.fajar.githubuserappdicoding.core.domain.mapper.DataMapper
+import com.fajar.githubuserappdicoding.core.domain.model.GithubRepos
+import com.fajar.githubuserappdicoding.core.domain.model.User
+import com.fajar.githubuserappdicoding.core.domain.model.UserPreview
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -34,7 +34,7 @@ class RepositoryImpl @Inject constructor(
         mapData: suspend T.() -> S,
         execute: T.() -> Unit = { },
         executeSuspend: suspend T.() -> Unit = { },
-    ): Flow<Resource<S>> = flow<Resource<S>> {
+    ): Flow<Resource<S>> = flow {
         try {
             val data = fetch()
             data.execute()
@@ -79,7 +79,6 @@ class RepositoryImpl @Inject constructor(
             }
         )
     }
-
 
     override fun getDetailUser(username: String): Flow<Resource<User>> {
         return fetchData(
@@ -149,19 +148,4 @@ class RepositoryImpl @Inject constructor(
             }
         }.flowOn(Dispatchers.Default)
     }
-
-    /*    companion object {
-            @Volatile
-            private var INSTANCE: RepositoryImpl? = null
-
-            fun getInstance(
-                apiService: ApiService,
-                dao: UserFavoriteDao,
-                settingPreference: SettingPreference
-            ): RepositoryImpl {
-                return INSTANCE ?: synchronized(this) {
-                    RepositoryImpl(apiService, dao, settingPreference)
-                }.also { INSTANCE = it }
-            }
-        }*/
 }

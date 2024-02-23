@@ -1,4 +1,4 @@
-package com.fajar.githubuserappdicoding
+package com.fajar.githubuserappdicoding.presentation
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.fajar.githubuserappdicoding.R
 import com.fajar.githubuserappdicoding.core.presentation.UIEvent
 import com.fajar.githubuserappdicoding.core.presentation.changeTheme
 import dagger.hilt.android.AndroidEntryPoint

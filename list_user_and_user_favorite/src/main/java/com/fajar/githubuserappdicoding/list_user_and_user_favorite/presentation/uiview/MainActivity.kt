@@ -15,13 +15,13 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.fajar.githubuserappdicoding.core.R.drawable.favorite_yes
 import com.fajar.githubuserappdicoding.core.R.drawable.favorite_no
+import com.fajar.githubuserappdicoding.core.R.drawable.favorite_yes
+import com.fajar.githubuserappdicoding.core.domain.model.UserPreview
 import com.fajar.githubuserappdicoding.core.presentation.UIEvent
 import com.fajar.githubuserappdicoding.core.presentation.changeTheme
 import com.fajar.githubuserappdicoding.core.presentation.collectChannelFlowOnLifecycleStarted
 import com.fajar.githubuserappdicoding.core.presentation.collectLatestOnLifeCycleStarted
-import com.fajar.githubuserappdicoding.core.domain.model.UserPreview
 import com.fajar.githubuserappdicoding.core.presentation.getDrawableRes
 import com.fajar.githubuserappdicoding.core.presentation.makeToast
 import com.fajar.githubuserappdicoding.core.presentation.showToast
@@ -29,28 +29,24 @@ import com.fajar.githubuserappdicoding.list_user_and_user_favorite.R
 import com.fajar.githubuserappdicoding.list_user_and_user_favorite.databinding.ActivityMainBinding
 import com.fajar.githubuserappdicoding.list_user_and_user_favorite.databinding.SwitchMenuLayoutBinding
 import com.fajar.githubuserappdicoding.list_user_and_user_favorite.di.initDI
+import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.adapter.UserAdapter
+import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.uiaction.MainUiAction
 import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.uistate.FavoriteState
 import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.uistate.MainUIState
-import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.uiaction.MainUiAction
-import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.viewmodel.MainViewModel
-import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.adapter.UserAdapter
 import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.util.checkIsUsingDarkTheme
 import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.util.toDp
+import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.viewmodel.MainViewModel
 import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.viewmodel.ViewModelFactory
 import com.google.android.material.R.id.open_search_view_clear_button
 import com.google.android.material.search.SearchView
-import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
-
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-    private val vm: MainViewModel by viewModels{
+    private val vm: MainViewModel by viewModels {
         viewModelFactory
     }
 
@@ -154,7 +150,6 @@ class MainActivity : AppCompatActivity() {
                         count: Int,
                         after: Int
                     ) {
-                        println("beforeTextChanged")
                     }
 
                     override fun onTextChanged(
@@ -166,22 +161,14 @@ class MainActivity : AppCompatActivity() {
                         println("query : $s")
                         val query = s.toString().trim()
                         searchBar.setText(query)
+
                         if (query.isNotBlank()) {
-                            println("searching")
                             vm.sendAction(MainUiAction.SearchingUser(query))
-                        } else {
-                            println("clearing")
-                            vm.sendAction(MainUiAction.ClearSearchList)
-                        }
+
+                        } else vm.sendAction(MainUiAction.ClearSearchList)
                     }
 
-                    override fun afterTextChanged(s: Editable?) {
-                        /*val query = s.toString().trim()
-                        searchBar.setText(query)
-                        if (query.isNotBlank()) {
-                            vm.sendAction(MainUiAction.SearchingUser(query))
-                        } else vm.sendAction(MainUiAction.ClearSearchList)*/
-                    }
+                    override fun afterTextChanged(s: Editable?) {}
                 })
 
                 inflateMenu(R.menu.menu_favorite)
@@ -198,27 +185,20 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    override fun onRestart() {
-        super.onRestart()
-        //vm.sendAction(MainUiAction.RestoreJobRes)
-    }
-
     private fun setLayout(uiState: MainUIState?) {
         binding.apply {
             uiState?.apply {
                 searchBar.setText(query)
-                println("setLayout : State : { query: $query, isLoading : $isLoading, oldFav : ${favoriteState.oldIsFavoriteList}, newFav: ${favoriteState.newIsFavoriteList} }")
-                println("size : ${listUserPreview.size}")
+
                 progressBar.isVisible = isLoading
                 setSearchViewCollapseAction(favoriteState)
                 setFavoriteMenuItemIcon(favoriteState)
+
                 if (isLoading) {
                     setRv(emptyList())
                 } else setRv(listUserPreview)
+
                 tvEmptyInfo.isVisible = !isLoading && listUserPreview.isEmpty()
-                /*toastMessage?.let {
-                    showToast(this@MainActivity, it)
-                }*/
             }
         }
     }
@@ -226,16 +206,7 @@ class MainActivity : AppCompatActivity() {
     private fun setSearchViewCollapseAction(favoriteState: FavoriteState) {
         favoriteState.toggleSingleEvent.getContentIfNotHandled()?.let { isToggled ->
             if (isToggled) {
-                println("""
-                    isToggled
-                    ---------
-                """.trimIndent())
                 binding.searchView.apply {
-                    //text.clear()
-                    /*if (isModeChangedToFavorite){
-                        binding.searchView.setText("")
-                    }*/
-
                     binding.searchView.setText("")
                     toolbar.collapseActionView()
                     clearFocusAndHideKeyboard()
@@ -270,11 +241,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /*   private fun obtainViewModel(): MainVM {
-           val viewModelFactory = ViewModelFactory.getInstance(applicationContext)
-           return ViewModelProvider(this, viewModelFactory)[MainVM::class.java]
-       }*/
-
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         binding.apply {
@@ -290,7 +256,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun toDetailAct(username: String) {
         try {
-            val detailActivityClass = Class.forName("com.fajar.githubuserappdicoding.detail_user.presentation.uiview.DetailActivity")
+            val detailActivityClass =
+                Class.forName("com.fajar.githubuserappdicoding.detail_user.presentation.uiview.DetailActivity")
             val extraUserStaticField = detailActivityClass.getDeclaredField("EXTRA_USER").run {
                 isAccessible = true
                 get(null)
@@ -299,7 +266,7 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, detailActivityClass)
             intent.putExtra(extraUserStaticField, username)
             startActivity(intent)
-        }catch (e:Exception){
+        } catch (e: Exception) {
             showToast(this, e.message.toString())
         }
 

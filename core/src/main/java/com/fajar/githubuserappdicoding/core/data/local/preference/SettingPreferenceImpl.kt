@@ -35,14 +35,5 @@ class SettingPreferenceImpl @Inject constructor(
 
     companion object {
         private val isDarkTheme = booleanPreferencesKey("is_dark_theme")
-
-        /* @Volatile
-         private var INSTANCE: SettingPreference? = null
-
-         fun getInstance(dataStore: DataStore<Preferences>): SettingPreference {
-             return INSTANCE ?: synchronized(this) {
-                 INSTANCE ?: SettingPreferenceImpl(dataStore)
-             }.also { INSTANCE = it }
-         }*/
     }
 }
