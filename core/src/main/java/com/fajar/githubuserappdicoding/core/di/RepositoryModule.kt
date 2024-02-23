@@ -1,9 +1,9 @@
 package com.fajar.githubuserappdicoding.core.di
 
-import com.fajar.githubuserappdicoding.core.domain.data.SettingPreference
-import com.fajar.githubuserappdicoding.core.data.local.preference.SettingPreferenceImpl
 import com.fajar.githubuserappdicoding.core.data.RepositoryImpl
+import com.fajar.githubuserappdicoding.core.data.local.preference.SettingPreferenceImpl
 import com.fajar.githubuserappdicoding.core.domain.data.Repository
+import com.fajar.githubuserappdicoding.core.domain.data.SettingPreference
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

@@ -1,7 +1,7 @@
 package com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.uistate
 
-import com.fajar.githubuserappdicoding.list_user_and_user_favorite.domain.common.SingleEvent
 import com.fajar.githubuserappdicoding.core.domain.model.UserPreview
+import com.fajar.githubuserappdicoding.list_user_and_user_favorite.domain.common.SingleEvent
 
 data class MainUIState(
     val query: String = "",

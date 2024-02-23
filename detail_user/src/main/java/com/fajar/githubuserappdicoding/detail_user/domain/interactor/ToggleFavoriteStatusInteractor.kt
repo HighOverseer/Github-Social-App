@@ -1,10 +1,10 @@
 package com.fajar.githubuserappdicoding.detail_user.domain.interactor
 
-import com.fajar.githubuserappdicoding.detail_user.R
-import com.fajar.githubuserappdicoding.core.domain.model.User
 import com.fajar.githubuserappdicoding.core.domain.common.StaticString
 import com.fajar.githubuserappdicoding.core.domain.common.StringRes
 import com.fajar.githubuserappdicoding.core.domain.data.Repository
+import com.fajar.githubuserappdicoding.core.domain.model.User
+import com.fajar.githubuserappdicoding.detail_user.R
 import com.fajar.githubuserappdicoding.detail_user.domain.ToggleFavoriteStatusUseCase
 import javax.inject.Inject
 

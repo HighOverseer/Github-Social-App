@@ -16,6 +16,6 @@
         <activity
             android:name=".presentation.uiview.MainActivity"
             android:windowSoftInputMode="adjustPan"
-            android:exported="true"/>
+            android:exported="true" />
     </application>
 </manifest>

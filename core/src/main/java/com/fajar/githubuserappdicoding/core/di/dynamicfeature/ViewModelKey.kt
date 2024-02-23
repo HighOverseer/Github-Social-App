@@ -11,4 +11,4 @@ import kotlin.reflect.KClass
     AnnotationTarget.PROPERTY_GETTER
 )
 @MapKey
-annotation class ViewModelKey(val value:KClass<out ViewModel>)
+annotation class ViewModelKey(val value: KClass<out ViewModel>)

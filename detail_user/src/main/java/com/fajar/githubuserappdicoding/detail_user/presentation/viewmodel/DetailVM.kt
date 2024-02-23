@@ -3,16 +3,15 @@ package com.fajar.githubuserappdicoding.detail_user.presentation.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.fajar.githubuserappdicoding.core.presentation.UIEvent
 import com.fajar.githubuserappdicoding.core.domain.common.DynamicString
 import com.fajar.githubuserappdicoding.core.domain.common.Resource
 import com.fajar.githubuserappdicoding.core.domain.model.User
+import com.fajar.githubuserappdicoding.core.presentation.UIEvent
 import com.fajar.githubuserappdicoding.detail_user.domain.CheckIsUserInFavoriteUseCase
-import com.fajar.githubuserappdicoding.detail_user.domain.ToggleFavoriteStatusUseCase
 import com.fajar.githubuserappdicoding.detail_user.domain.GetDetailUserUseCase
+import com.fajar.githubuserappdicoding.detail_user.domain.ToggleFavoriteStatusUseCase
 import com.fajar.githubuserappdicoding.detail_user.presentation.uistate.DetailUiState
 import com.fajar.githubuserappdicoding.detail_user.presentation.uiview.DetailActivity
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.SharingStarted
@@ -22,7 +21,6 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class DetailVM(
     private val toggleFavoriteStatusUseCase: ToggleFavoriteStatusUseCase,

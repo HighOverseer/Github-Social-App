@@ -1,7 +1,7 @@
 package com.fajar.githubuserappdicoding.detail_user.domain.interactor
 
-import com.fajar.githubuserappdicoding.core.domain.data.Repository
 import com.fajar.githubuserappdicoding.core.domain.common.Resource
+import com.fajar.githubuserappdicoding.core.domain.data.Repository
 import com.fajar.githubuserappdicoding.core.domain.model.UserDetailInfo
 import com.fajar.githubuserappdicoding.detail_user.domain.GetUserReposOrFollowingOrFollowerUseCase
 import kotlinx.coroutines.flow.Flow

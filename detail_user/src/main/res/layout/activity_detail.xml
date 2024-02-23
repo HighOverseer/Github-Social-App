@@ -16,8 +16,7 @@
         android:background="@drawable/favorite_no"
         android:backgroundTint="@color/grey"
         app:layout_constraintTop_toTopOf="@id/app_bar"
-        app:layout_constraintBottom_toBottomOf="@id/app_bar"
-        />
+        app:layout_constraintBottom_toBottomOf="@id/app_bar" />
 
     <ImageButton
         android:id="@+id/btn_backNav"

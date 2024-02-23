@@ -1,10 +1,8 @@
 package com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.util
 
-import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.util.TypedValue
-import android.widget.Toast
 
 fun checkIsUsingDarkTheme(res: Resources): Boolean {
     return when (

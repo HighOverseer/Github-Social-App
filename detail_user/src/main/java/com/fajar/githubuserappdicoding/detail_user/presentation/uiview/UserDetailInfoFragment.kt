@@ -10,18 +10,17 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fajar.githubuserappdicoding.core.di.util.GenericSavedStateViewModelFactory
+import com.fajar.githubuserappdicoding.core.domain.model.UserDetailInfo
 import com.fajar.githubuserappdicoding.core.presentation.UIEvent
-import com.fajar.githubuserappdicoding.detail_user.presentation.adapter.UserDetailInfoAdapter
-import com.fajar.githubuserappdicoding.detail_user.presentation.uistate.UserDetailInfoUiState
-import com.fajar.githubuserappdicoding.detail_user.presentation.viewmodel.UserDetailInfoVM
 import com.fajar.githubuserappdicoding.core.presentation.collectChannelFlowOnLifecycleStarted
 import com.fajar.githubuserappdicoding.core.presentation.collectLatestOnLifeCycleStarted
-import com.fajar.githubuserappdicoding.core.domain.model.UserDetailInfo
 import com.fajar.githubuserappdicoding.core.presentation.showToast
 import com.fajar.githubuserappdicoding.detail_user.databinding.FragmentUserDetailInfoBinding
 import com.fajar.githubuserappdicoding.detail_user.di.initDI
+import com.fajar.githubuserappdicoding.detail_user.presentation.adapter.UserDetailInfoAdapter
+import com.fajar.githubuserappdicoding.detail_user.presentation.uistate.UserDetailInfoUiState
+import com.fajar.githubuserappdicoding.detail_user.presentation.viewmodel.UserDetailInfoVM
 import com.fajar.githubuserappdicoding.detail_user.presentation.viewmodel.UserDetailInfoViewModelFactory
-import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 
@@ -32,7 +31,7 @@ class UserDetailInfoFragment : Fragment() {
     @Inject
     lateinit var factory: UserDetailInfoViewModelFactory
 
-    private val vm: UserDetailInfoVM by viewModels{
+    private val vm: UserDetailInfoVM by viewModels {
         GenericSavedStateViewModelFactory(factory, this, arguments)
     }
 

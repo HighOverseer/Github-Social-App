@@ -1,7 +1,5 @@
 package com.fajar.githubuserappdicoding.detail_user.di
 
-import androidx.lifecycle.ViewModel
-import com.fajar.githubuserappdicoding.core.di.dynamicfeature.ViewModelKey
 import com.fajar.githubuserappdicoding.detail_user.domain.CheckIsUserInFavoriteUseCase
 import com.fajar.githubuserappdicoding.detail_user.domain.GetDetailUserUseCase
 import com.fajar.githubuserappdicoding.detail_user.domain.GetUserReposOrFollowingOrFollowerUseCase
@@ -10,13 +8,9 @@ import com.fajar.githubuserappdicoding.detail_user.domain.interactor.CheckIsUser
 import com.fajar.githubuserappdicoding.detail_user.domain.interactor.GetDetailUserInteractor
 import com.fajar.githubuserappdicoding.detail_user.domain.interactor.GetUserReposOrFollowingOrFollowerInteractor
 import com.fajar.githubuserappdicoding.detail_user.domain.interactor.ToggleFavoriteStatusInteractor
-import com.fajar.githubuserappdicoding.detail_user.presentation.viewmodel.DetailVM
-import com.fajar.githubuserappdicoding.detail_user.presentation.viewmodel.UserDetailInfoVM
 import dagger.Binds
 import dagger.Module
-import dagger.hilt.InstallIn
 import dagger.hilt.migration.DisableInstallInCheck
-import dagger.multibindings.IntoMap
 
 @DisableInstallInCheck
 @Module

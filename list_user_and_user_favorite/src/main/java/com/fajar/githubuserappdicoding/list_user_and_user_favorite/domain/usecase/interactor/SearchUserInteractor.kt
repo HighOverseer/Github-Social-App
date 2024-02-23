@@ -1,8 +1,8 @@
 package com.fajar.githubuserappdicoding.list_user_and_user_favorite.domain.usecase.interactor
 
-import com.fajar.githubuserappdicoding.core.domain.model.UserPreview
 import com.fajar.githubuserappdicoding.core.domain.common.Resource
 import com.fajar.githubuserappdicoding.core.domain.data.Repository
+import com.fajar.githubuserappdicoding.core.domain.model.UserPreview
 import com.fajar.githubuserappdicoding.list_user_and_user_favorite.domain.usecase.SearchUserUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

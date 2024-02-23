@@ -1,7 +1,7 @@
 package com.fajar.githubuserappdicoding.core.domain.data
 
-import com.fajar.githubuserappdicoding.core.domain.model.GithubRepos
 import com.fajar.githubuserappdicoding.core.domain.common.Resource
+import com.fajar.githubuserappdicoding.core.domain.model.GithubRepos
 import com.fajar.githubuserappdicoding.core.domain.model.User
 import com.fajar.githubuserappdicoding.core.domain.model.UserPreview
 import kotlinx.coroutines.flow.Flow

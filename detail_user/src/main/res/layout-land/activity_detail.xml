@@ -133,8 +133,7 @@
         android:backgroundTint="@color/grey"
         app:layout_constraintTop_toTopOf="@id/civ_detailAvatar"
         app:layout_constraintStart_toStartOf="@id/guideline2"
-        app:layout_constraintEnd_toEndOf="@id/guideline3"
-        />
+        app:layout_constraintEnd_toEndOf="@id/guideline3" />
 
 
     <TextView

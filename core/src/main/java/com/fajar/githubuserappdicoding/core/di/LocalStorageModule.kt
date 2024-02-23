@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.room.Room
-import com.fajar.githubuserappdicoding.core.data.local.db.UserFavoriteDao
 import com.fajar.githubuserappdicoding.core.data.local.db.Database
+import com.fajar.githubuserappdicoding.core.data.local.db.UserFavoriteDao
 import com.fajar.githubuserappdicoding.core.data.local.preference.dataStore
 import dagger.Module
 import dagger.Provides

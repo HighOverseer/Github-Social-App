@@ -1,11 +1,11 @@
 package com.fajar.githubuserappdicoding.core.domain.mapper
 
-import com.fajar.githubuserappdicoding.core.data.remote.response.DetailUserDto
-import com.fajar.githubuserappdicoding.core.domain.model.GithubRepos
-import com.fajar.githubuserappdicoding.core.data.remote.response.GithubReposDto
-import com.fajar.githubuserappdicoding.core.domain.model.User
 import com.fajar.githubuserappdicoding.core.data.local.db.UserFavorite
+import com.fajar.githubuserappdicoding.core.data.remote.response.DetailUserDto
+import com.fajar.githubuserappdicoding.core.data.remote.response.GithubReposDto
 import com.fajar.githubuserappdicoding.core.data.remote.response.UserModelDto
+import com.fajar.githubuserappdicoding.core.domain.model.GithubRepos
+import com.fajar.githubuserappdicoding.core.domain.model.User
 import com.fajar.githubuserappdicoding.core.domain.model.UserPreview
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ensureActive

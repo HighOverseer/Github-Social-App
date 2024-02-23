@@ -7,8 +7,6 @@
     tools:context=".presentation.uiview.MainActivity">
 
 
-
-
     <com.google.android.material.search.SearchBar
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
@@ -84,7 +82,6 @@
         app:layout_constraintBottom_toTopOf="@id/search_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,11 +6,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
 
-class GenericSavedStateViewModelFactory<out V: ViewModel>(
+class GenericSavedStateViewModelFactory<out V : ViewModel>(
     private val viewModelAssistedFactory: ViewModelAssistedFactory<V>,
-    owner:SavedStateRegistryOwner,
-    defaultArgs:Bundle?=null
-):AbstractSavedStateViewModelFactory(owner, defaultArgs){
+    owner: SavedStateRegistryOwner,
+    defaultArgs: Bundle? = null
+) : AbstractSavedStateViewModelFactory(owner, defaultArgs) {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(
         key: String,

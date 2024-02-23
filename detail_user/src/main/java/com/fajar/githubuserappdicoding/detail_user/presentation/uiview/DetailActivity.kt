@@ -6,22 +6,22 @@ import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import com.fajar.githubuserappdicoding.detail_user.presentation.uistate.DetailUiState
-import com.fajar.githubuserappdicoding.detail_user.presentation.viewmodel.DetailVM
-import com.fajar.githubuserappdicoding.core.R.drawable.favorite_yes
 import com.fajar.githubuserappdicoding.core.R.drawable.favorite_no
+import com.fajar.githubuserappdicoding.core.R.drawable.favorite_yes
 import com.fajar.githubuserappdicoding.core.di.util.GenericSavedStateViewModelFactory
+import com.fajar.githubuserappdicoding.core.domain.model.User
 import com.fajar.githubuserappdicoding.core.presentation.UIEvent
-import com.fajar.githubuserappdicoding.detail_user.presentation.adapter.ViewPagerAdapter
 import com.fajar.githubuserappdicoding.core.presentation.collectChannelFlowOnLifecycleStarted
 import com.fajar.githubuserappdicoding.core.presentation.collectLatestOnLifeCycleStarted
-import com.fajar.githubuserappdicoding.core.domain.model.User
 import com.fajar.githubuserappdicoding.core.presentation.getDrawableRes
 import com.fajar.githubuserappdicoding.core.presentation.loadImage
 import com.fajar.githubuserappdicoding.core.presentation.showToast
 import com.fajar.githubuserappdicoding.detail_user.R
 import com.fajar.githubuserappdicoding.detail_user.databinding.ActivityDetailBinding
 import com.fajar.githubuserappdicoding.detail_user.di.initDI
+import com.fajar.githubuserappdicoding.detail_user.presentation.adapter.ViewPagerAdapter
+import com.fajar.githubuserappdicoding.detail_user.presentation.uistate.DetailUiState
+import com.fajar.githubuserappdicoding.detail_user.presentation.viewmodel.DetailVM
 import com.fajar.githubuserappdicoding.detail_user.presentation.viewmodel.DetailViewModelFactory
 import com.google.android.material.tabs.TabLayoutMediator
 import javax.inject.Inject
@@ -34,7 +34,7 @@ class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
     private lateinit var intentUsername: String
-    private val vm: DetailVM by viewModels{
+    private val vm: DetailVM by viewModels {
         GenericSavedStateViewModelFactory(factory, this, intent.extras)
     }
 

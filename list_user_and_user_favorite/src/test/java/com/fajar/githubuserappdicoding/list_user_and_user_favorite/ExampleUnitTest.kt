@@ -1,8 +1,7 @@
 package com.fajar.githubuserappdicoding.list_user_and_user_favorite
 
+import org.junit.Assert.assertEquals
 import org.junit.Test
-
-import org.junit.Assert.*
 
 /**
  * Example local unit test, which will execute on the development machine (host).

@@ -11,7 +11,7 @@ class DetailViewModelFactory @Inject constructor(
     private val toggleFavoriteStatusUseCase: ToggleFavoriteStatusUseCase,
     private val getDetailUserUseCase: GetDetailUserUseCase,
     private val checkIsUserInFavoriteUseCase: CheckIsUserInFavoriteUseCase
-):ViewModelAssistedFactory<DetailVM> {
+) : ViewModelAssistedFactory<DetailVM> {
     override fun create(savedStateHandle: SavedStateHandle): DetailVM {
         return DetailVM(
             toggleFavoriteStatusUseCase,

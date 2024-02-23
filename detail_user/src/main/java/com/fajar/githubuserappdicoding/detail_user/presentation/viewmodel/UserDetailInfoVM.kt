@@ -3,16 +3,15 @@ package com.fajar.githubuserappdicoding.detail_user.presentation.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.fajar.githubuserappdicoding.core.presentation.UIEvent
 import com.fajar.githubuserappdicoding.core.domain.common.DynamicString
 import com.fajar.githubuserappdicoding.core.domain.common.Resource
 import com.fajar.githubuserappdicoding.core.domain.data.Repository
 import com.fajar.githubuserappdicoding.core.domain.model.UserDetailInfo
+import com.fajar.githubuserappdicoding.core.presentation.UIEvent
 import com.fajar.githubuserappdicoding.detail_user.domain.GetUserReposOrFollowingOrFollowerUseCase
 import com.fajar.githubuserappdicoding.detail_user.presentation.uistate.UserDetailInfoUiState
 import com.fajar.githubuserappdicoding.detail_user.presentation.uiview.DetailActivity
 import com.fajar.githubuserappdicoding.detail_user.presentation.uiview.UserDetailInfoFragment
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.SharingStarted
@@ -20,7 +19,6 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
-import javax.inject.Inject
 
 class UserDetailInfoVM(
     getUserReposOrFollowingOrFollowerUseCase: GetUserReposOrFollowingOrFollowerUseCase,

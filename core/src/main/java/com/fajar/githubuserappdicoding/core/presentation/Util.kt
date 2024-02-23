@@ -1,9 +1,7 @@
 package com.fajar.githubuserappdicoding.core.presentation
 
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.drawable.Drawable
-import android.util.TypedValue
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.content.res.AppCompatResources
@@ -11,7 +9,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.fajar.githubuserappdicoding.core.R
 import com.fajar.githubuserappdicoding.core.domain.common.StringRes
@@ -88,13 +85,9 @@ fun <T> LifecycleOwner.collectChannelFlowOnLifecycleStarted(
 }
 
 
-
-
-
 fun Context.getDrawableRes(drawableResId: Int): Drawable? {
     return AppCompatResources.getDrawable(this, drawableResId)
 }
-
 
 
 fun changeTheme(isDarkTheme: Boolean) {
