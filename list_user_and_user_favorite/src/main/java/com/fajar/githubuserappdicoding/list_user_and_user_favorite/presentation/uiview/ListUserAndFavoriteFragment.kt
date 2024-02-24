@@ -19,6 +19,7 @@ import androidx.navigation.findNavController
 import com.fajar.githubuserappdicoding.core.R.drawable
 import com.fajar.githubuserappdicoding.core.presentation.UIEvent
 import com.fajar.githubuserappdicoding.core.presentation.changeTheme
+import com.fajar.githubuserappdicoding.core.R.style
 import com.fajar.githubuserappdicoding.core.presentation.collectChannelFlowOnLifecycleStarted
 import com.fajar.githubuserappdicoding.core.presentation.collectLatestOnLifeCycleStarted
 import com.fajar.githubuserappdicoding.core.presentation.getDrawableRes
@@ -36,6 +37,7 @@ import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.
 import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.util.toDp
 import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.viewmodel.ListUserAndFavoriteViewModel
 import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.viewmodel.ViewModelFactory
+import com.fajar.githubuserappdicoding.presentation.MainActivity
 import com.google.android.material.search.SearchView
 import javax.inject.Inject
 
@@ -58,7 +60,9 @@ class ListUserAndFavoriteFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         initDI(requireActivity()).inject(this)
+        (activity as MainActivity).setSystemBarVisibility(true)
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,6 +78,7 @@ class ListUserAndFavoriteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         viewLifecycleOwner.collectLatestOnLifeCycleStarted(viewModel.themeState) { isDarkTheme ->
             val isAlreadyDarkTheme = checkIsUsingDarkTheme(resources)
@@ -289,5 +294,4 @@ class ListUserAndFavoriteFragment : Fragment() {
             )
         view?.findNavController()?.navigate(direction)
     }
-
 }

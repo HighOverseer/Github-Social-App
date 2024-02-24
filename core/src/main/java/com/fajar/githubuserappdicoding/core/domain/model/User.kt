@@ -1,7 +1,7 @@
 package com.fajar.githubuserappdicoding.core.domain.model
 
 
-data class User constructor(
+data class User(
     val username: String = "",
     val name: String = "",
     val avatar: String = "",
