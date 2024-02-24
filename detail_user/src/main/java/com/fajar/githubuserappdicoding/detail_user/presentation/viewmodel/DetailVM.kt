@@ -27,7 +27,6 @@ class DetailVM(
     getDetailUserUseCase: GetDetailUserUseCase,
     checkIsUserInFavoriteUseCase: CheckIsUserInFavoriteUseCase,
     savedStateHandle: SavedStateHandle
-    //args: save
 ) : ViewModel() {
 
     private val username = savedStateHandle.get<String>(DetailFragment.EXTRA_USER)
@@ -84,10 +83,6 @@ class DetailVM(
                     isLoading = false,
                     isUserFavorite = isUserFavorite
                 )
-                /*if (res.e is HttpException || res.e is SocketTimeoutException) {
-                    delay(5000L)
-                    getUserProfile(args)
-                }*/
             }
         }
     }

@@ -23,7 +23,6 @@ import kotlinx.coroutines.flow.stateIn
 class UserDetailInfoVM(
     getUserReposOrFollowingOrFollowerUseCase: GetUserReposOrFollowingOrFollowerUseCase,
     savedStateHandle: SavedStateHandle
-    //args: Bundle
 ) : ViewModel() {
 
     private val username =
@@ -93,10 +92,6 @@ class UserDetailInfoVM(
                 uiState.value.copy(
                     isLoading = false
                 )
-                /*if (res.e is HttpException || res.e is SocketTimeoutException) {
-                    delay(5000L)
-                    getData(args)
-                }*/
             }
         }
     }

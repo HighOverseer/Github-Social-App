@@ -28,16 +28,3 @@ abstract class ListUserModule {
     @Binds
     abstract fun provideChangeThemePrefUseCase(changeThemePrefInteractor: ChangeThemePrefInteractor): ChangeThemePrefUseCase
 }
-/*
-@Module
-@InstallIn(ViewModelComponent::class)
-abstract class ListUserModule {
-
-    @Binds
-    @ViewModelScoped
-    abstract fun provideSearchUserUseCase(searchUserInteractor: SearchUserInteractor): SearchUserUseCase
-
-    @Binds
-    @ViewModelScoped
-    abstract fun provideChangeThemePrefUseCase(changeThemePrefInteractor: ChangeThemePrefInteractor):ChangeThemePrefUseCase
-}*/

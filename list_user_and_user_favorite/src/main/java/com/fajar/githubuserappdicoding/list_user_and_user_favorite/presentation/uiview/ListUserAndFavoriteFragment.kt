@@ -19,7 +19,6 @@ import androidx.navigation.findNavController
 import com.fajar.githubuserappdicoding.core.R.drawable
 import com.fajar.githubuserappdicoding.core.presentation.UIEvent
 import com.fajar.githubuserappdicoding.core.presentation.changeTheme
-import com.fajar.githubuserappdicoding.core.R.style
 import com.fajar.githubuserappdicoding.core.presentation.collectChannelFlowOnLifecycleStarted
 import com.fajar.githubuserappdicoding.core.presentation.collectLatestOnLifeCycleStarted
 import com.fajar.githubuserappdicoding.core.presentation.getDrawableRes
@@ -116,7 +115,6 @@ class ListUserAndFavoriteFragment : Fragment() {
                     searchView.hide()
                 } else {
                     remove()
-                    //requireActivity().onBackPressedDispatcher.onBackPressed()
                     requireActivity().finish()
                 }
             }
@@ -198,7 +196,6 @@ class ListUserAndFavoriteFragment : Fragment() {
                         before: Int,
                         count: Int
                     ) {
-                        println("query : $s")
                         val query = s.toString().trim()
                         searchBar.setText(query)
 

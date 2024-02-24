@@ -26,7 +26,6 @@ import com.fajar.githubuserappdicoding.detail_user.presentation.adapter.ViewPage
 import com.fajar.githubuserappdicoding.detail_user.presentation.uistate.DetailUiState
 import com.fajar.githubuserappdicoding.detail_user.presentation.viewmodel.DetailVM
 import com.fajar.githubuserappdicoding.detail_user.presentation.viewmodel.DetailViewModelFactory
-import com.fajar.githubuserappdicoding.presentation.MainActivity
 import com.google.android.material.tabs.TabLayoutMediator
 import javax.inject.Inject
 

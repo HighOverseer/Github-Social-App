@@ -30,27 +30,3 @@ abstract class DetailUserModule {
         getUserReposOrFollowingOrFollowerUseCaseInteractor: GetUserReposOrFollowingOrFollowerInteractor
     ): GetUserReposOrFollowingOrFollowerUseCase
 }
-/*
-@Module
-@InstallIn(ViewModelComponent::class)
-abstract class DetailUserModule {
-
-    @Binds
-    @ViewModelScoped
-    abstract fun provideGetDetailUserUseCase(getDetailUserInteractor: GetDetailUserInteractor): GetDetailUserUseCase
-
-    @Binds
-    @ViewModelScoped
-    abstract fun provideToggleFavoriteStatusUseCase(toggleFavoriteStatusInteractor: ToggleFavoriteStatusInteractor): ToggleFavoriteStatusUseCase
-
-    @Binds
-    @ViewModelScoped
-    abstract fun provideCheckIsUserInFavoriteUseCase(checkIsUserInFavoriteInteractor: CheckIsUserInFavoriteInteractor): CheckIsUserInFavoriteUseCase
-
-    @Binds
-    @ViewModelScoped
-    abstract fun provideGetUserReposOrFollowingOrFollowerUseCase(
-        getUserReposOrFollowingOrFollowerUseCaseInteractor: GetUserReposOrFollowingOrFollowerInteractor
-    ): GetUserReposOrFollowingOrFollowerUseCase
-
-}*/

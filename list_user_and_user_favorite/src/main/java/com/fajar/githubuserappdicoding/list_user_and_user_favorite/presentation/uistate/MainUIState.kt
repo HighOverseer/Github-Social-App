@@ -7,7 +7,6 @@ data class MainUIState(
     val query: String = "",
     val isLoading: Boolean = false,
     val listUserPreview: List<UserPreview> = emptyList(),
-    //val toastMessage: SingleEvent<StringRes>? = null,
     val favoriteState: FavoriteState = FavoriteState()
 )
 

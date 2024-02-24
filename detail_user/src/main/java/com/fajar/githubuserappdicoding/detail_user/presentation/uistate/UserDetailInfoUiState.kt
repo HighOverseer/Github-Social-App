@@ -5,5 +5,4 @@ import com.fajar.githubuserappdicoding.core.domain.model.UserDetailInfo
 data class UserDetailInfoUiState(
     val listItems: List<UserDetailInfo> = emptyList(),
     val isLoading: Boolean = false,
-    //val toastMessage: SingleEvent<StringRes>? = null
 )

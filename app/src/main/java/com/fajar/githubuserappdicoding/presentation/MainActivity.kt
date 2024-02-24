@@ -1,7 +1,6 @@
 package com.fajar.githubuserappdicoding.presentation
 
 import android.os.Bundle
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -12,7 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private val windowController:WindowInsetsControllerCompat by lazy {
+    private val windowController: WindowInsetsControllerCompat by lazy {
         WindowCompat.setDecorFitsSystemWindows(window, true)
         WindowInsetsControllerCompat(window, window.decorView)
     }
@@ -22,9 +21,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
     }
 
-    fun setSystemBarVisibility(isShown:Boolean){
-        if (isShown){
+    fun setSystemBarVisibility(isShown: Boolean) {
+        if (isShown) {
             windowController.show(WindowInsetsCompat.Type.systemBars())
-        }else windowController.hide(WindowInsetsCompat.Type.systemBars())
+        } else windowController.hide(WindowInsetsCompat.Type.systemBars())
     }
 }

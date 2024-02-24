@@ -181,7 +181,6 @@ class ListUserAndFavoriteViewModel @Inject constructor(
         return searchUserUseCase(isInFavoriteList, query).map { res ->
             when (res) {
                 is Resource.Success -> {
-                    println(res.data)
                     uiState.value.copy(
                         listUserPreview = res.data,
                         isLoading = false,

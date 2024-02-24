@@ -39,16 +39,6 @@ fun makeToast(context: Context, message: StringRes): Toast {
     return Toast.makeText(context, message.getValue(context), Toast.LENGTH_SHORT)
 }
 
-/*fun showToast(context: Context, singleEventMessage: SingleEvent<StringRes>) {
-    singleEventMessage.getContentIfNotHandled()?.let {
-        Toast.makeText(
-            context,
-            it.getValue(context),
-            Toast.LENGTH_SHORT
-        ).show()
-    }
-}*/
-
 fun <T> LifecycleOwner.collectLatestOnLifeCycleStarted(
     stateFlow: StateFlow<T>,
     onCollectLatest: suspend (T) -> Unit

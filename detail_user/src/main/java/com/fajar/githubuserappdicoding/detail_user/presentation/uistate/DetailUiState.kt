@@ -6,5 +6,4 @@ data class DetailUiState(
     val userProfile: User = User(),
     val isLoading: Boolean = false,
     val isUserFavorite: Boolean = false,
-    //val toastMessage: SingleEvent<StringRes>? = null
 )
