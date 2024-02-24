@@ -10,7 +10,7 @@ import com.fajar.githubuserappdicoding.core.domain.model.UserDetailInfo
 import com.fajar.githubuserappdicoding.core.presentation.UIEvent
 import com.fajar.githubuserappdicoding.detail_user.domain.GetUserReposOrFollowingOrFollowerUseCase
 import com.fajar.githubuserappdicoding.detail_user.presentation.uistate.UserDetailInfoUiState
-import com.fajar.githubuserappdicoding.detail_user.presentation.uiview.DetailActivity
+import com.fajar.githubuserappdicoding.detail_user.presentation.uiview.DetailFragment
 import com.fajar.githubuserappdicoding.detail_user.presentation.uiview.UserDetailInfoFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -27,7 +27,7 @@ class UserDetailInfoVM(
 ) : ViewModel() {
 
     private val username =
-        savedStateHandle.get<String>(DetailActivity.EXTRA_USER)
+        savedStateHandle.get<String>(DetailFragment.EXTRA_USER)
             ?: throw Exception("Terjadi Kesalahan..")
     private val pos = savedStateHandle.get<Int>(UserDetailInfoFragment.EXTRA_POSITION)
         ?: throw Exception("Terjadi Kesalahan..")

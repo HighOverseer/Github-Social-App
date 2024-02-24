@@ -18,6 +18,8 @@
     <string name="empty">Empty..</string>
     <string name="added_to_favorite_info">%1$s Added to Favorite List</string>
     <string name="removed_from_favorite_info">%1$s Removed from Favorite List</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

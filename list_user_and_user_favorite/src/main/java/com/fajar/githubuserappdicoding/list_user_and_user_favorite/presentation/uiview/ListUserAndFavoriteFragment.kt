@@ -1,23 +1,22 @@
 package com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.uiview
 
-
-import android.content.Intent
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.PopupWindow
 import android.widget.Toast
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.fajar.githubuserappdicoding.core.R.drawable.favorite_no
-import com.fajar.githubuserappdicoding.core.R.drawable.favorite_yes
-import com.fajar.githubuserappdicoding.core.domain.model.UserPreview
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
+import com.fajar.githubuserappdicoding.core.R.drawable
 import com.fajar.githubuserappdicoding.core.presentation.UIEvent
 import com.fajar.githubuserappdicoding.core.presentation.changeTheme
 import com.fajar.githubuserappdicoding.core.presentation.collectChannelFlowOnLifecycleStarted
@@ -26,52 +25,67 @@ import com.fajar.githubuserappdicoding.core.presentation.getDrawableRes
 import com.fajar.githubuserappdicoding.core.presentation.makeToast
 import com.fajar.githubuserappdicoding.core.presentation.showToast
 import com.fajar.githubuserappdicoding.list_user_and_user_favorite.R
-import com.fajar.githubuserappdicoding.list_user_and_user_favorite.databinding.ActivityMainBinding
+import com.fajar.githubuserappdicoding.list_user_and_user_favorite.databinding.FragmentListUserAndFavoriteBinding
 import com.fajar.githubuserappdicoding.list_user_and_user_favorite.databinding.SwitchMenuLayoutBinding
 import com.fajar.githubuserappdicoding.list_user_and_user_favorite.di.initDI
-import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.adapter.UserAdapter
+import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.adapter.ListUserAdapter
 import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.uiaction.MainUiAction
 import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.uistate.FavoriteState
 import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.uistate.MainUIState
 import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.util.checkIsUsingDarkTheme
 import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.util.toDp
-import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.viewmodel.MainViewModel
+import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.viewmodel.ListUserAndFavoriteViewModel
 import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.viewmodel.ViewModelFactory
-import com.google.android.material.R.id.open_search_view_clear_button
 import com.google.android.material.search.SearchView
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+class ListUserAndFavoriteFragment : Fragment() {
+
+    private var binding: FragmentListUserAndFavoriteBinding? = null
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-    private val vm: MainViewModel by viewModels {
+    private val viewModel: ListUserAndFavoriteViewModel by viewModels {
         viewModelFactory
     }
 
+    private lateinit var adapter: ListUserAdapter
     private val onItemGetClicked = ::toDetailAct
     private var popUpBinding: SwitchMenuLayoutBinding? = null
     private var popupWindow: PopupWindow? = null
     private var toastMessage: Toast? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        initDI(this).inject(this)
-        super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        initDI(requireActivity()).inject(this)
+    }
 
-        collectLatestOnLifeCycleStarted(vm.themeState) { isDarkTheme ->
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentListUserAndFavoriteBinding.inflate(
+            inflater,
+            container,
+            false
+        )
+        return binding?.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewLifecycleOwner.collectLatestOnLifeCycleStarted(viewModel.themeState) { isDarkTheme ->
             val isAlreadyDarkTheme = checkIsUsingDarkTheme(resources)
             if (isDarkTheme != isAlreadyDarkTheme) {
                 changeTheme(isDarkTheme)
             }
         }
 
-        collectChannelFlowOnLifecycleStarted(vm.uiEvent) {
+        viewLifecycleOwner.collectChannelFlowOnLifecycleStarted(viewModel.uiEvent) {
             if (it is UIEvent.ToastMessageEvent) {
                 toastMessage?.cancel()
-                toastMessage = makeToast(this, it.message)
+                toastMessage = makeToast(requireActivity(), it.message)
                 toastMessage?.show()
             }
         }
@@ -79,26 +93,46 @@ class MainActivity : AppCompatActivity() {
 
         setUpComponents()
 
-        collectLatestOnLifeCycleStarted(vm.uiState) {
+        viewLifecycleOwner.collectLatestOnLifeCycleStarted(viewModel.uiState) {
             setLayout(it)
         }
 
+        requireActivity().onBackPressedDispatcher.addCallback(onBackPressedCallback)
+    }
 
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            binding?.apply {
+                val isSearchViewHidden = (
+                        searchView.currentTransitionState == SearchView.TransitionState.HIDDEN
+                                || searchView.currentTransitionState == SearchView.TransitionState.HIDING
+                        )
+                if (!isSearchViewHidden) {
+                    searchView.hide()
+                } else {
+                    remove()
+                    //requireActivity().onBackPressedDispatcher.onBackPressed()
+                    requireActivity().finish()
+                }
+            }
+        }
     }
 
     private fun setUpComponents() {
         setUpSearchView()
         setUpSearchBar()
+        initRecyclerView()
+
     }
 
     private fun setUpSearchBar() {
-        binding.apply {
+        binding?.apply {
             searchBar.apply {
                 inflateMenu(R.menu.menu_theme)
                 popUpBinding = SwitchMenuLayoutBinding.inflate(layoutInflater)
                 popUpBinding?.switchTheme?.isChecked = checkIsUsingDarkTheme(resources)
                 popUpBinding?.switchTheme?.setOnCheckedChangeListener { _, _ ->
-                    vm.sendAction(MainUiAction.ChangeTheme)
+                    viewModel.sendAction(MainUiAction.ChangeTheme)
                 }
                 popupWindow = PopupWindow(
                     popUpBinding?.root,
@@ -117,31 +151,32 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUpSearchView() {
-        binding.apply {
+        binding?.apply {
             searchView.apply {
                 setupWithSearchBar(searchBar)
                 editText.setOnEditorActionListener { _, _, _ ->
                     val query = searchView.text.toString().trim()
                     searchBar.setText(query)
                     if (query.isNotBlank()) {
-                        vm.sendAction(MainUiAction.SearchUser(query))
+                        viewModel.sendAction(MainUiAction.SearchUser(query))
                         clearFocusAndHideKeyboard()
                     } else {
                         searchView.text.clear()
                         searchView.hide()
                         showToast(
-                            this@MainActivity,
+                            requireActivity(),
                             getString(R.string.query_blank)
                         )
                     }
                     false
                 }
-                val btnClear = toolbar.findViewById<ImageButton>(open_search_view_clear_button)
+                val btnClear =
+                    toolbar.findViewById<ImageButton>(com.google.android.material.R.id.open_search_view_clear_button)
                 btnClear.setOnClickListener {
                     text.clear()
                     toolbar.collapseActionView()
                     clearFocusAndHideKeyboard()
-                    vm.sendAction(MainUiAction.ClearSearchList)
+                    viewModel.sendAction(MainUiAction.ClearSearchList)
                 }
                 editText.addTextChangedListener(object : TextWatcher {
                     override fun beforeTextChanged(
@@ -163,9 +198,9 @@ class MainActivity : AppCompatActivity() {
                         searchBar.setText(query)
 
                         if (query.isNotBlank()) {
-                            vm.sendAction(MainUiAction.SearchingUser(query))
+                            viewModel.sendAction(MainUiAction.SearchingUser(query))
 
-                        } else vm.sendAction(MainUiAction.ClearSearchList)
+                        } else viewModel.sendAction(MainUiAction.ClearSearchList)
                     }
 
                     override fun afterTextChanged(s: Editable?) {}
@@ -175,7 +210,7 @@ class MainActivity : AppCompatActivity() {
                 setOnMenuItemClickListener { selectedMenuItem ->
                     when (selectedMenuItem.itemId) {
                         R.id.menu_favorite -> {
-                            vm.sendAction(MainUiAction.ChangeMode)
+                            viewModel.sendAction(MainUiAction.ChangeMode)
                         }
                     }
                     false
@@ -186,7 +221,7 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun setLayout(uiState: MainUIState?) {
-        binding.apply {
+        binding?.apply {
             uiState?.apply {
                 searchBar.setText(query)
 
@@ -195,8 +230,8 @@ class MainActivity : AppCompatActivity() {
                 setFavoriteMenuItemIcon(favoriteState)
 
                 if (isLoading) {
-                    setRv(emptyList())
-                } else setRv(listUserPreview)
+                    adapter.submitList(emptyList())
+                } else adapter.submitList(listUserPreview)
 
                 tvEmptyInfo.isVisible = !isLoading && listUserPreview.isEmpty()
             }
@@ -206,8 +241,8 @@ class MainActivity : AppCompatActivity() {
     private fun setSearchViewCollapseAction(favoriteState: FavoriteState) {
         favoriteState.toggleSingleEvent.getContentIfNotHandled()?.let { isToggled ->
             if (isToggled) {
-                binding.searchView.apply {
-                    binding.searchView.setText("")
+                binding?.searchView?.apply {
+                    binding?.searchView?.setText("")
                     toolbar.collapseActionView()
                     clearFocusAndHideKeyboard()
                 }
@@ -217,7 +252,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showPopupMenu() {
-        val switchMenuItemView = this@MainActivity.findViewById<View>(R.id.menu_change_theme)
+        val switchMenuItemView = view?.findViewById<View>(R.id.menu_change_theme)
         popupWindow?.showAsDropDown(
             switchMenuItemView,
             0,
@@ -227,49 +262,32 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setFavoriteMenuItemIcon(favoriteState: FavoriteState) {
-        val favoriteMenuItem = binding.searchView.toolbar.menu.findItem(R.id.menu_favorite)
-        favoriteMenuItem.icon = if (favoriteState.newIsFavoriteList) {
-            this.getDrawableRes(favorite_yes)
-        } else this.getDrawableRes(favorite_no)
+        val favoriteMenuItem = binding?.searchView?.toolbar?.menu?.findItem(R.id.menu_favorite)
+        favoriteMenuItem?.icon = if (favoriteState.newIsFavoriteList) {
+            requireActivity().getDrawableRes(drawable.favorite_yes)
+        } else requireActivity().getDrawableRes(drawable.favorite_no)
     }
 
-    private fun setRv(listUserPreview: List<UserPreview>) {
-        val adapter = UserAdapter(listUserPreview, onItemGetClicked)
-        binding.apply {
+    private fun initRecyclerView() {
+        binding?.apply {
+            adapter = ListUserAdapter(onItemGetClicked)
+            rvListUsers.setHasFixedSize(true)
             rvListUsers.adapter = adapter
-            rvListUsers.layoutManager = LinearLayoutManager(this@MainActivity)
         }
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        binding.apply {
-            val isSearchViewHidden = (
-                    searchView.currentTransitionState == SearchView.TransitionState.HIDDEN
-                            || searchView.currentTransitionState == SearchView.TransitionState.HIDING
-                    )
-            if (!isSearchViewHidden) {
-                searchView.hide()
-            } else super.onBackPressed()
-        }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+        onBackPressedCallback.remove()
     }
 
     private fun toDetailAct(username: String) {
-        try {
-            val detailActivityClass =
-                Class.forName("com.fajar.githubuserappdicoding.detail_user.presentation.uiview.DetailActivity")
-            val extraUserStaticField = detailActivityClass.getDeclaredField("EXTRA_USER").run {
-                isAccessible = true
-                get(null)
-            } as String
-
-            val intent = Intent(this, detailActivityClass)
-            intent.putExtra(extraUserStaticField, username)
-            startActivity(intent)
-        } catch (e: Exception) {
-            showToast(this, e.message.toString())
-        }
-
+        val direction =
+            ListUserAndFavoriteFragmentDirections.actionListUserAndFavoriteFragmentToDetailUserFragment(
+                username
+            )
+        view?.findNavController()?.navigate(direction)
     }
 
 }

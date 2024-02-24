@@ -3,6 +3,8 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id "dagger.hilt.android.plugin"
     id "kotlin-kapt"
+    //id ("androidx.navigation.safeargs.kotlin")
+    id 'androidx.navigation.safeargs'
 }
 
 apply from: '../shared_dependencies.gradle'
@@ -22,6 +24,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17

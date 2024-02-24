@@ -2,7 +2,7 @@ package com.fajar.githubuserappdicoding.list_user_and_user_favorite.di
 
 import android.content.Context
 import com.fajar.githubuserappdicoding.di.ListUserModuleDependencies
-import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.uiview.MainActivity
+import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.uiview.ListUserAndFavoriteFragment
 import dagger.BindsInstance
 import dagger.Component
 
@@ -13,7 +13,7 @@ import dagger.Component
 )
 interface ListUserComponent {
 
-    fun inject(activity: MainActivity)
+    fun inject(fragment: ListUserAndFavoriteFragment)
 
     @Component.Builder
     interface Builder {

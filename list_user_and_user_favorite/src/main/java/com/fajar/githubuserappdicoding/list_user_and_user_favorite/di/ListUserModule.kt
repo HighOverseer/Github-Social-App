@@ -6,7 +6,7 @@ import com.fajar.githubuserappdicoding.list_user_and_user_favorite.domain.usecas
 import com.fajar.githubuserappdicoding.list_user_and_user_favorite.domain.usecase.SearchUserUseCase
 import com.fajar.githubuserappdicoding.list_user_and_user_favorite.domain.usecase.interactor.ChangeThemePrefInteractor
 import com.fajar.githubuserappdicoding.list_user_and_user_favorite.domain.usecase.interactor.SearchUserInteractor
-import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.viewmodel.MainViewModel
+import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.viewmodel.ListUserAndFavoriteViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.migration.DisableInstallInCheck
@@ -19,8 +19,8 @@ abstract class ListUserModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(MainViewModel::class)
-    abstract fun bindMainViewModel(viewModel: MainViewModel): ViewModel
+    @ViewModelKey(ListUserAndFavoriteViewModel::class)
+    abstract fun bindMainViewModel(viewModel: ListUserAndFavoriteViewModel): ViewModel
 
     @Binds
     abstract fun provideSearchUserUseCase(searchUserInteractor: SearchUserInteractor): SearchUserUseCase

@@ -11,7 +11,7 @@ import com.fajar.githubuserappdicoding.detail_user.domain.CheckIsUserInFavoriteU
 import com.fajar.githubuserappdicoding.detail_user.domain.GetDetailUserUseCase
 import com.fajar.githubuserappdicoding.detail_user.domain.ToggleFavoriteStatusUseCase
 import com.fajar.githubuserappdicoding.detail_user.presentation.uistate.DetailUiState
-import com.fajar.githubuserappdicoding.detail_user.presentation.uiview.DetailActivity
+import com.fajar.githubuserappdicoding.detail_user.presentation.uiview.DetailFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.SharingStarted
@@ -30,7 +30,7 @@ class DetailVM(
     //args: save
 ) : ViewModel() {
 
-    private val username = savedStateHandle.get<String>(DetailActivity.EXTRA_USER)
+    private val username = savedStateHandle.get<String>(DetailFragment.EXTRA_USER)
         ?: throw Exception("Terjadi Kesalahan..")
 
     private val _uiEvent = Channel<UIEvent>()

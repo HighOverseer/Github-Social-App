@@ -17,11 +17,11 @@ import javax.inject.Singleton
 class NetworkModule {
 
     @Provides
-    fun provideApiService(/*okHttpClient: OkHttpClient*/): ApiService {
+    fun provideApiService(okHttpClient: OkHttpClient): ApiService {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            //.client(okHttpClient)
+            .client(okHttpClient)
             .build()
             .create(ApiService::class.java)
     }

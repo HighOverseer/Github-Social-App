@@ -7,4 +7,6 @@
     <string name="hint_search_view">let\'s get to know someone…</string>
     <string name="list_favorites">List Favorites</string>
     <string name="title_list_user_and_user_favorite">List User And User Favorite</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

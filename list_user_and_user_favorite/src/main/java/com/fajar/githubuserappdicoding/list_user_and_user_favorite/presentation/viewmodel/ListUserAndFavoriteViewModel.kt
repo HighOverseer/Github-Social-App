@@ -33,7 +33,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class MainViewModel @Inject constructor(
+class ListUserAndFavoriteViewModel @Inject constructor(
     private val searchUserUseCase: SearchUserUseCase,
     private val changeThemePrefUseCase: ChangeThemePrefUseCase,
     checkIsThemeDarkUseCase: CheckIsThemeDarkUseCase

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?><!--suppress NavigationFile -->
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.fajar.githubuserappdicoding.presentation.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/action_splashFragment_to_listUserAndFavoriteFragment"
+            app:destination="@id/listUserAndFavoriteFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/listUserAndFavoriteFragment"
+        app:moduleName="list_user_and_user_favorite"
+        android:name="com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.uiview.ListUserAndFavoriteFragment">
+        <action
+            android:id="@+id/action_listUserAndFavoriteFragment_to_detail_user_fragment"
+            app:destination="@id/detail_user_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detail_user_fragment"
+        android:name="com.fajar.githubuserappdicoding.detail_user.presentation.uiview.DetailFragment"
+        app:moduleName="detail_user">
+        <argument
+            android:name="extra_user"
+            app:argType="string" />
+    </fragment>
+
+</navigation>

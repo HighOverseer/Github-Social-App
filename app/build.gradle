@@ -4,6 +4,8 @@ plugins {
     id "com.google.devtools.ksp"
     id "dagger.hilt.android.plugin"
     id("kotlin-kapt")
+    // id ("androidx.navigation.safeargs.kotlin")
+    id 'androidx.navigation.safeargs'
 }
 
 apply from: '../shared_dependencies.gradle'
@@ -36,6 +38,8 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+
+
     buildFeatures {
         viewBinding = true
         buildConfig = true
@@ -46,6 +50,10 @@ android {
 
 dependencies {
     api(project(":core"))
+
+    api 'androidx.navigation:navigation-fragment-ktx:2.7.7'
+    api 'androidx.navigation:navigation-ui-ktx:2.7.7'
+    api "androidx.navigation:navigation-dynamic-features-fragment:2.7.7"
     /*def retrofitVersion = "2.9.0"
 
     implementation 'androidx.core:core-ktx:1.12.0'

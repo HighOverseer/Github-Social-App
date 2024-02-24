@@ -3,6 +3,8 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id "dagger.hilt.android.plugin"
     id "kotlin-kapt"
+    //id ("androidx.navigation.safeargs.kotlin")
+    id 'androidx.navigation.safeargs'
 }
 
 apply from: '../shared_dependencies.gradle'
@@ -30,6 +32,7 @@ android {
         }
     }
 
+
     buildFeatures {
         viewBinding = true
     }
@@ -37,4 +40,5 @@ android {
 
 dependencies {
     implementation project(":app")
+
 }
