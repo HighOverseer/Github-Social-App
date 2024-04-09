@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.PopupWindow
+
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
@@ -38,6 +39,7 @@ import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.
 import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.viewmodel.ViewModelFactory
 import com.fajar.githubuserappdicoding.presentation.MainActivity
 import com.google.android.material.search.SearchView
+
 import javax.inject.Inject
 
 class ListUserAndFavoriteFragment : Fragment() {
@@ -107,6 +109,7 @@ class ListUserAndFavoriteFragment : Fragment() {
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             binding?.apply {
+
                 val isSearchViewHidden = (
                         searchView.currentTransitionState == SearchView.TransitionState.HIDDEN
                                 || searchView.currentTransitionState == SearchView.TransitionState.HIDING

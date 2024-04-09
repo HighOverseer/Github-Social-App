@@ -1,5 +1,6 @@
 package com.fajar.githubuserappdicoding.core.data
 
+
 import com.fajar.githubuserappdicoding.core.R
 import com.fajar.githubuserappdicoding.core.data.local.db.UserFavoriteDao
 import com.fajar.githubuserappdicoding.core.data.remote.network.ApiService
@@ -34,6 +35,7 @@ class RepositoryImpl @Inject constructor(
         mapData: suspend T.() -> S,
     ): Flow<Resource<S>> = flow {
         try {
+            
             val data = fetch()
 
             val result = mapData(data)

@@ -36,10 +36,13 @@ class DetailFragment : Fragment() {
     @Inject
     lateinit var factory: DetailViewModelFactory
 
+
     private lateinit var intentUsername: String
     private val viewModel: DetailVM by viewModels {
         GenericSavedStateViewModelFactory(factory, this, arguments)
     }
+
+
 
     companion object {
         const val EXTRA_USER = "extra_user"
@@ -62,6 +65,7 @@ class DetailFragment : Fragment() {
 
         return binding?.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -110,7 +114,6 @@ class DetailFragment : Fragment() {
             TabLayoutMediator(tabLayout, viewPager) { tab, pos ->
                 tab.text = tabsTitles[pos]
             }.attach()
-
         }
     }
 
