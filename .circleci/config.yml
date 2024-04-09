@@ -1,11 +1,12 @@
-version: 2.1
-
+version: '2.1'
 orbs:
-  android: circleci/android@2.5.0
-
+  android: circleci/android@2.4.0
 jobs:
-  build:
-    executor: android/android
+  test:
+    executor:
+      name: android/android-machine
+      resource-class: large
+      tag: default
     steps:
       - checkout
       - restore_cache:
@@ -13,9 +14,9 @@ jobs:
       - run:
           name: Chmod permissions
           command: sudo chmod +x ./gradlew
-      #- run:
-      #    name: Download Dependencies
-      #    command: ./gradlew androidDependencies
+      - run:
+          name: Download Dependencies
+          command: ./gradlew androidDependencies
       - save_cache:
           key: 'android-orb-v1-{{ epoch }}'
           paths:
