@@ -12,10 +12,7 @@ jobs:
           name: Install OpenJDK 17
           command: |
               sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys B53DC80D13EDEF05
-              sudo add-apt-repository ppa:openjdk-r/ppa
               sudo apt-get update && sudo apt-get install openjdk-17-jdk
-              sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
-              sudo update-alternatives --set javac /usr/lib/jvm/java-17-openjdk-amd64/bin/javac
               java -version
       - restore_cache:
           key: android-orb-v1-
