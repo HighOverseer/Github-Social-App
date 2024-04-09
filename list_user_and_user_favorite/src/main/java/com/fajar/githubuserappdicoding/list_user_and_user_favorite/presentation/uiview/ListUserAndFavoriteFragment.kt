@@ -270,6 +270,7 @@ class ListUserAndFavoriteFragment : Fragment() {
         val favoriteMenuItem = binding?.searchView?.toolbar?.menu?.findItem(R.id.menu_favorite)
         favoriteMenuItem?.icon = if (favoriteState.newIsFavoriteList) {
             requireActivity().getDrawableRes(drawable.favorite_yes)
+
         } else requireActivity().getDrawableRes(drawable.favorite_no)
     }
 
