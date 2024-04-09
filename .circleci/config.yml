@@ -1,20 +1,13 @@
 version: 2.1
 
 orbs:
-  android: circleci/android@0.2.1
+  android: circleci/android@2.5.0
 
 jobs:
   build:
     executor: android/android
     steps:
       - checkout
-      - run:
-          name: Install OpenJDK 17
-          command: |
-            sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B53DC80D13EDEF05
-            sudo apt install openjdk-17-jre
-            sudo apt install openjdk-17-jdk
-            java -version
       - restore_cache:
           key: android-orb-v1-
       - run:
