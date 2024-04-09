@@ -4,7 +4,7 @@ orbs:
   android: circleci/android@2.4.0
 
 jobs:
-  build-release:
+  build:
     executor: android/android-machine
     steps:
       - checkout
