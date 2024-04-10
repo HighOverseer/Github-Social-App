@@ -14,9 +14,6 @@ jobs:
       - restore_cache:
           key: android-orb-v1-
       - run:
-          name: Chmod permissions
-          command: sudo chmod +x ./gradlew
-      - run:
           name: Setup Environment Variables
           command: |
             GRADLE_PROPERTIES=$HOME"/gradle.properties"
@@ -27,6 +24,9 @@ jobs:
             echo "API_TOKEN to gradle.properties..."
             echo "API_TOKEN=\"$API_TOKEN\"" >> $GRADLE_PROPERTIES
             echo "$API_TOKEN"
+      - run:
+          name: Chmod permissions
+          command: sudo chmod +x ./gradlew
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
