@@ -16,7 +16,7 @@ android {
         minSdk 24
         buildConfigField("String", "BASE_URL", '"https://api.github.com/"')
 
-
+        buildConfigField("String", "API_TOKEN", API_TOKEN)
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
