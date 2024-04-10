@@ -10,6 +10,6 @@ function copyEnvVarsToGradleProperties{
     touch $GRADLE_PROPERTIES
 
     echo "Writing ORG_GRADLE_PROJECT_API_TOKEN to gradle.properties..."
-    echo "API_TOKEN=$API_TOKEN" >> $GRADLE_PROPERTIES
+    echo "API_TOKEN=\"$API_TOKEN\"" >> $GRADLE_PROPERTIES
   fi
 }
