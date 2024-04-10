@@ -3,6 +3,10 @@ version: '2.1'
 orbs:
   android: circleci/android@2.4.0
 
+dependencies:
+  pre:
+    - source environmentSetup.sh && copyEnvVarsToGradleProperties
+
 jobs:
   test:
     executor:
