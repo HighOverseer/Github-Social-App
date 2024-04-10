@@ -19,14 +19,14 @@ jobs:
       - run:
           name: Setup Environment Variables
           command: |
-            GRADLE_PROPERTIES=$HOME"/gradle.properties"
+            GRADLE_PROPERTIES=$HOME"/.gradle/gradle.properties"
             export GRADLE_PROPERTIES
             echo "Gradle Properties should exist at $GRADLE_PROPERTIES"
             echo "Gradle Properties does not exist"
             echo "Creating Gradle Properties file..."
             touch $GRADLE_PROPERTIES
             echo "Writing ORG_GRADLE_PROJECT_API_TOKEN to gradle.properties..."
-            echo "API_TOKEN=\"$API_TOKEN\"" >> $GRADLE_PROPERTIES
+            echo "API_TOKEN=$API_TOKEN" >> $GRADLE_PROPERTIES
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
