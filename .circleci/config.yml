@@ -3,8 +3,6 @@ version: '2.1'
 orbs:
   android: circleci/android@2.4.0
 
-
-
 jobs:
   test:
     executor:
@@ -18,6 +16,17 @@ jobs:
       - run:
           name: Chmod permissions
           command: sudo chmod +x ./gradlew
+      - run:
+          name: Setup Environment Variables
+          command: |
+            GRADLE_PROPERTIES=$HOME"/gradle.properties"
+            export GRADLE_PROPERTIES
+            echo "Gradle Properties should exist at $GRADLE_PROPERTIES"
+            echo "Gradle Properties does not exist"
+            echo "Creating Gradle Properties file..."
+            touch $GRADLE_PROPERTIES
+            echo "Writing ORG_GRADLE_PROJECT_API_TOKEN to gradle.properties..."
+            echo "API_TOKEN=\"$API_TOKEN\"" >> $GRADLE_PROPERTIES
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
