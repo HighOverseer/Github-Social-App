@@ -17,6 +17,7 @@ jobs:
           name: Setup Environment Variables
           command: |
             GRADLE_PROPERTIES=$HOME"/gradle.properties"
+            echo ! -f "$GRADLE_PROPERTIES"
             export GRADLE_PROPERTIES
             echo "Gradle Properties should exist at $GRADLE_PROPERTIES"
             echo "Creating Gradle Properties file..."
