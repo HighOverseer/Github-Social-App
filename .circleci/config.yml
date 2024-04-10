@@ -5,7 +5,7 @@ orbs:
 
 dependencies:
   pre:
-    - source environmentSetup.sh && copyEnvVarsToGradleProperties
+    - source ../environmentSetup.sh && copyEnvVarsToGradleProperties
 
 jobs:
   test:
