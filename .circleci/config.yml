@@ -15,20 +15,8 @@ jobs:
           key: android-orb-v1-
       - run:
           name: Setup Environment Variables
-          command: |
-                  GRADLE_PROPERTIES=$HOME"/.gradle/gradle.properties"
-                  export GRADLE_PROPERTIES
-                  echo "Gradle Properties should exist at $GRADLE_PROPERTIES"
-                
-                  if [ ! -f "$GRADLE_PROPERTIES" ]; then
-                    echo "Gradle Properties does not exist"
-                    
-                    echo "Creating Gradle Properties file..."
-                    touch $GRADLE_PROPERTIES
-                    
-                    echo "Writing ORG_GRADLE_PROJECT_API_TOKEN to gradle.properties..."
-                    echo "API_TOKEN=\"$API_TOKEN\"" >> $GRADLE_PROPERTIES
-                  fi
+          command: echo "API_TOKEN=\"$API_TOKEN\"" >> gradle.properties
+
       - run:
           name: Chmod permissions
           command: sudo chmod +x ./gradlew
