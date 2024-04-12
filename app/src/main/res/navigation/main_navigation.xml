@@ -17,8 +17,7 @@
 
     <fragment
         android:id="@+id/listUserAndFavoriteFragment"
-        app:moduleName="list_user_and_user_favorite"
-        android:name="com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.uiview.ListUserAndFavoriteFragment">
+        app:moduleName="list_user_and_user_favorite" android:name="com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.uiview.ListUserAndFavoriteFragment">
         <action
             android:id="@+id/action_listUserAndFavoriteFragment_to_detail_user_fragment"
             app:destination="@id/detail_user_fragment" />

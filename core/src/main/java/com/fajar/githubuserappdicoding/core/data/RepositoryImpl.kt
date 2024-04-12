@@ -35,7 +35,7 @@ class RepositoryImpl @Inject constructor(
         mapData: suspend T.() -> S,
     ): Flow<Resource<S>> = flow {
         try {
-            
+
             val data = fetch()
 
             val result = mapData(data)

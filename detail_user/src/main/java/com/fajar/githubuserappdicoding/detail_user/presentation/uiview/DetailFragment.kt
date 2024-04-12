@@ -42,6 +42,7 @@ class DetailFragment : Fragment() {
         GenericSavedStateViewModelFactory(factory, this, arguments)
     }
 
+    private lateinit var tabLayoutMediator: TabLayoutMediator
 
 
     companion object {
@@ -103,21 +104,24 @@ class DetailFragment : Fragment() {
     }
 
     private fun setUpViewPager(savedInstanceState: Bundle?) {
-        val adapter = ViewPagerAdapter(
-            getArgs(savedInstanceState),
-            childFragmentManager,
-            viewLifecycleOwner.lifecycle
-        )
         binding?.apply {
+            val adapter = ViewPagerAdapter(
+                getArgs(savedInstanceState),
+                childFragmentManager,
+                viewLifecycleOwner.lifecycle
+            )
             viewPager.adapter = adapter
             val tabsTitles = resources.getStringArray(R.array.tab_titles)
-            TabLayoutMediator(tabLayout, viewPager) { tab, pos ->
+            tabLayoutMediator = TabLayoutMediator(tabLayout, viewPager) { tab, pos ->
                 tab.text = tabsTitles[pos]
-            }.attach()
+            }
+            tabLayoutMediator.attach()
         }
     }
 
     override fun onDestroyView() {
+        tabLayoutMediator.detach()
+        binding?.viewPager?.adapter = null
         super.onDestroyView()
         binding = null
     }

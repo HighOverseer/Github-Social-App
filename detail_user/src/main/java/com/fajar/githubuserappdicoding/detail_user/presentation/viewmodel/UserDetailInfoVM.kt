@@ -100,4 +100,5 @@ class UserDetailInfoVM(
         GithubRepos(0), Followers(1), Following(2)
     }
 
+
 }

@@ -16,7 +16,6 @@ jobs:
       - run:
           name: Setup Environment Variables
           command: echo "API_TOKEN=\"$API_TOKEN\"" >> gradle.properties
-
       - run:
           name: Chmod permissions
           command: sudo chmod +x ./gradlew

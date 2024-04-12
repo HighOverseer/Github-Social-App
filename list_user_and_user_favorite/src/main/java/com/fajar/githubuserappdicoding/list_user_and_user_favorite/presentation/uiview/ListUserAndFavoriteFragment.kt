@@ -38,6 +38,7 @@ import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.
 import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.viewmodel.ListUserAndFavoriteViewModel
 import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.viewmodel.ViewModelFactory
 import com.fajar.githubuserappdicoding.presentation.MainActivity
+import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
 
 import javax.inject.Inject
@@ -52,11 +53,14 @@ class ListUserAndFavoriteFragment : Fragment() {
         viewModelFactory
     }
 
-    private lateinit var adapter: ListUserAdapter
+    private var adapter: ListUserAdapter? = null
     private val onItemGetClicked = ::toDetailAct
     private var popUpBinding: SwitchMenuLayoutBinding? = null
     private var popupWindow: PopupWindow? = null
     private var toastMessage: Toast? = null
+    private var searchEditTextChangedListener: TextWatcher? = null
+
+    private var willNavigateToDetail = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -75,6 +79,15 @@ class ListUserAndFavoriteFragment : Fragment() {
             false
         )
         return binding?.root
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        if (willNavigateToDetail) {
+            binding?.searchView?.hide()
+            willNavigateToDetail = false
+        }
+
+        super.onViewStateRestored(savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -134,6 +147,8 @@ class ListUserAndFavoriteFragment : Fragment() {
     private fun setUpSearchBar() {
         binding?.apply {
             searchBar.apply {
+                importantForAccessibility = SearchBar.IMPORTANT_FOR_ACCESSIBILITY_NO
+
                 inflateMenu(R.menu.menu_theme)
                 popUpBinding = SwitchMenuLayoutBinding.inflate(layoutInflater)
                 popUpBinding?.switchTheme?.isChecked = checkIsUsingDarkTheme(resources)
@@ -156,9 +171,18 @@ class ListUserAndFavoriteFragment : Fragment() {
         }
     }
 
+
     private fun setUpSearchView() {
         binding?.apply {
             searchView.apply {
+                importantForAccessibility = SearchView.IMPORTANT_FOR_ACCESSIBILITY_NO
+                setModalForAccessibility(false)
+
+                //TODO()
+                /*binding?.searchView?.addTransitionListener { searchView, previousState, newState ->
+
+                }*/
+
                 setupWithSearchBar(searchBar)
                 editText.setOnEditorActionListener { _, _, _ ->
                     val query = searchView.text.toString().trim()
@@ -184,32 +208,9 @@ class ListUserAndFavoriteFragment : Fragment() {
                     clearFocusAndHideKeyboard()
                     viewModel.sendAction(MainUiAction.ClearSearchList)
                 }
-                editText.addTextChangedListener(object : TextWatcher {
-                    override fun beforeTextChanged(
-                        s: CharSequence?,
-                        start: Int,
-                        count: Int,
-                        after: Int
-                    ) {
-                    }
 
-                    override fun onTextChanged(
-                        s: CharSequence?,
-                        start: Int,
-                        before: Int,
-                        count: Int
-                    ) {
-                        val query = s.toString().trim()
-                        searchBar.setText(query)
-
-                        if (query.isNotBlank()) {
-                            viewModel.sendAction(MainUiAction.SearchingUser(query))
-
-                        } else viewModel.sendAction(MainUiAction.ClearSearchList)
-                    }
-
-                    override fun afterTextChanged(s: Editable?) {}
-                })
+                searchEditTextChangedListener = createSearchViewEditTextChangedListener(searchBar)
+                editText.addTextChangedListener(searchEditTextChangedListener)
 
                 inflateMenu(R.menu.menu_favorite)
                 setOnMenuItemClickListener { selectedMenuItem ->
@@ -224,6 +225,34 @@ class ListUserAndFavoriteFragment : Fragment() {
         }
     }
 
+    private fun createSearchViewEditTextChangedListener(searchBar: SearchBar): TextWatcher {
+        return object : TextWatcher {
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+            }
+
+            override fun onTextChanged(
+                s: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int
+            ) {
+                val query = s.toString().trim()
+                searchBar.setText(query)
+
+                if (query.isNotBlank()) {
+                    viewModel.sendAction(MainUiAction.SearchingUser(query))
+
+                } else viewModel.sendAction(MainUiAction.ClearSearchList)
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        }
+    }
 
     private fun setLayout(uiState: MainUIState?) {
         binding?.apply {
@@ -235,8 +264,8 @@ class ListUserAndFavoriteFragment : Fragment() {
                 setFavoriteMenuItemIcon(favoriteState)
 
                 if (isLoading) {
-                    adapter.submitList(emptyList())
-                } else adapter.submitList(listUserPreview)
+                    adapter?.submitList(emptyList())
+                } else adapter?.submitList(listUserPreview)
 
                 tvEmptyInfo.isVisible = !isLoading && listUserPreview.isEmpty()
             }
@@ -283,16 +312,30 @@ class ListUserAndFavoriteFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        binding?.apply {
+
+            popUpBinding = null
+            popupWindow = null
+            toastMessage = null
+            adapter = null
+
+            searchView.editText.removeTextChangedListener(searchEditTextChangedListener)
+            searchEditTextChangedListener = null
+            rvListUsers.adapter = null
+            onBackPressedCallback.remove()
+        }
         super.onDestroyView()
         binding = null
-        onBackPressedCallback.remove()
+
     }
 
     private fun toDetailAct(username: String) {
+        willNavigateToDetail = true
         val direction =
             ListUserAndFavoriteFragmentDirections.actionListUserAndFavoriteFragmentToDetailUserFragment(
                 username
             )
         view?.findNavController()?.navigate(direction)
+
     }
 }

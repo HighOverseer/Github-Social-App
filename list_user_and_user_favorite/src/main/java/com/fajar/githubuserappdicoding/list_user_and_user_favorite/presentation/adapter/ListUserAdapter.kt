@@ -14,7 +14,7 @@ class ListUserAdapter(
 ) : ListAdapter<UserPreview, ListUserAdapter.UserViewHolder>(diffUtil) {
 
 
-    inner class UserViewHolder(
+    class UserViewHolder(
         val binding: ItemLayoutBinding,
         clickedAtPosition: (Int) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {

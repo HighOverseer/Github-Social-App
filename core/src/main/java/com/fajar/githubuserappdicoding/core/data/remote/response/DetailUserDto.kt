@@ -1,7 +1,9 @@
 package com.fajar.githubuserappdicoding.core.data.remote.response
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class DetailUserDto(
     @field:SerializedName("login")
     val username: String?,

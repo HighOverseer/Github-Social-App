@@ -23,7 +23,12 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+        }
+        debug {
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -47,11 +52,13 @@ dependencies {
     ksp "androidx.room:room-compiler:2.6.1"
     implementation "androidx.room:room-ktx:2.6.1"
 
+    implementation "net.zetetic:android-database-sqlcipher:4.4.0"
+    implementation "androidx.sqlite:sqlite-ktx:2.4.0"
+
 
     implementation "androidx.datastore:datastore-preferences:1.0.0"
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
-    implementation "com.squareup.okhttp3:logging-interceptor:4.9.0"
 
 
 }

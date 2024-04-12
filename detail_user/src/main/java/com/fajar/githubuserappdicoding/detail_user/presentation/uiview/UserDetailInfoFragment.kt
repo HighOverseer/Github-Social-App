@@ -25,8 +25,7 @@ import javax.inject.Inject
 
 
 class UserDetailInfoFragment : Fragment() {
-    private var _binding: FragmentUserDetailInfoBinding? = null
-    private val binding get() = _binding!!
+    private var binding: FragmentUserDetailInfoBinding? = null
 
     @Inject
     lateinit var factory: UserDetailInfoViewModelFactory
@@ -47,9 +46,9 @@ class UserDetailInfoFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentUserDetailInfoBinding.inflate(inflater, container, false)
-        return binding.root
+    ): View? {
+        binding = FragmentUserDetailInfoBinding.inflate(inflater, container, false)
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,7 +63,7 @@ class UserDetailInfoFragment : Fragment() {
     }
 
     private fun setLayout(uiState: UserDetailInfoUiState) {
-        binding.apply {
+        binding?.apply {
             uiState.apply {
                 setUpRv(listItems)
                 progressBar.isVisible = isLoading
@@ -75,15 +74,16 @@ class UserDetailInfoFragment : Fragment() {
 
     private fun setUpRv(items: List<UserDetailInfo>) {
         val adapter = UserDetailInfoAdapter(items)
-        binding.apply {
+        binding?.apply {
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(requireActivity())
         }
     }
 
     override fun onDestroyView() {
+        binding?.recyclerView?.adapter = null
         super.onDestroyView()
-        _binding = null
+        binding = null
     }
 
 }
