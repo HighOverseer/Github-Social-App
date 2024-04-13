@@ -97,6 +97,10 @@ class ListUserAndFavoriteFragment : Fragment() {
         viewLifecycleOwner.collectLatestOnLifeCycleStarted(viewModel.themeState) { isDarkTheme ->
             val isAlreadyDarkTheme = checkIsUsingDarkTheme(resources)
             if (isDarkTheme != isAlreadyDarkTheme) {
+                //prevent leaks
+                popupWindow?.dismiss()
+                popUpBinding = null
+
                 changeTheme(isDarkTheme)
             }
         }
@@ -171,6 +175,13 @@ class ListUserAndFavoriteFragment : Fragment() {
         }
     }
 
+    private val searchViewTransitionListener = SearchView.TransitionListener { searchView, previousState, newState ->
+        val isSearchViewVisible = newState == SearchView.TransitionState.SHOWN
+        binding?.apply {
+            searchBar.isVisible = !isSearchViewVisible
+            ivLogo.isVisible = !isSearchViewVisible
+        }
+    }
 
     private fun setUpSearchView() {
         binding?.apply {
@@ -178,10 +189,8 @@ class ListUserAndFavoriteFragment : Fragment() {
                 importantForAccessibility = SearchView.IMPORTANT_FOR_ACCESSIBILITY_NO
                 setModalForAccessibility(false)
 
-                //TODO()
-                /*binding?.searchView?.addTransitionListener { searchView, previousState, newState ->
 
-                }*/
+                binding?.searchView?.addTransitionListener(searchViewTransitionListener)
 
                 setupWithSearchBar(searchBar)
                 editText.setOnEditorActionListener { _, _, _ ->
@@ -320,6 +329,7 @@ class ListUserAndFavoriteFragment : Fragment() {
             adapter = null
 
             searchView.editText.removeTextChangedListener(searchEditTextChangedListener)
+            searchView.removeTransitionListener(searchViewTransitionListener)
             searchEditTextChangedListener = null
             rvListUsers.adapter = null
             onBackPressedCallback.remove()
