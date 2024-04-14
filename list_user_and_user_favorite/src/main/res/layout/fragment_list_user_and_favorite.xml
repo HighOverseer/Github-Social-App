@@ -6,6 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".presentation.uiview.ListUserAndFavoriteFragment">
 
+    <ImageView
+        android:id="@+id/iv_logo"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:alpha="0.3"
+        android:contentDescription="@string/logo"
+        android:src="@mipmap/ic_logo_foreground"
+        android:layout_marginBottom="-16dp"
+        app:layout_constraintBottom_toTopOf="@id/search_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <com.google.android.material.search.SearchBar
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
@@ -72,17 +85,6 @@
     </com.google.android.material.search.SearchView>
 
 
-    <ImageView
-        android:id="@+id/iv_logo"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:alpha="0.3"
-        android:contentDescription="@string/logo"
-        android:src="@drawable/icon_github"
-        android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toTopOf="@id/search_bar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
