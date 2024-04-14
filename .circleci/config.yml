@@ -15,7 +15,9 @@ jobs:
           key: android-orb-v1-
       - run:
           name: Setup Environment Variables
-          command: echo "API_TOKEN=\"$API_TOKEN\"" >> gradle.properties
+          command: |
+                  echo "API_TOKEN=\"$API_TOKEN\"" >> gradle.properties
+                  echo "SERVER_HOST_NAME=$SERVER_HOST_NAME" >> gradle.properties
       - run:
           name: Chmod permissions
           command: sudo chmod +x ./gradlew
