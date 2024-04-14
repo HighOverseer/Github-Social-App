@@ -42,6 +42,8 @@ class ListUserAndFavoriteViewModel @Inject constructor(
         private const val DELAY_MILLIS = 500L
     }
 
+    var hasNavigatedToDetail:Boolean = false
+
     val themeState = checkIsThemeDarkUseCase()
         .distinctUntilChanged()
 

@@ -1,6 +1,7 @@
 package com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.uiview
 
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -40,6 +41,7 @@ import com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.
 import com.fajar.githubuserappdicoding.presentation.MainActivity
 import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
+import java.lang.ref.WeakReference
 
 import javax.inject.Inject
 
@@ -57,10 +59,10 @@ class ListUserAndFavoriteFragment : Fragment() {
     private val onItemGetClicked = ::toDetailAct
     private var popUpBinding: SwitchMenuLayoutBinding? = null
     private var popupWindow: PopupWindow? = null
-    private var toastMessage: Toast? = null
     private var searchEditTextChangedListener: TextWatcher? = null
+    private var toastMessageWeakReference:WeakReference<Toast?> = WeakReference(null)
 
-    private var willNavigateToDetail = false
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -82,9 +84,9 @@ class ListUserAndFavoriteFragment : Fragment() {
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        if (willNavigateToDetail) {
+
+        if (viewModel.hasNavigatedToDetail) {
             binding?.searchView?.hide()
-            willNavigateToDetail = false
         }
 
         super.onViewStateRestored(savedInstanceState)
@@ -92,7 +94,6 @@ class ListUserAndFavoriteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         viewLifecycleOwner.collectLatestOnLifeCycleStarted(viewModel.themeState) { isDarkTheme ->
             val isAlreadyDarkTheme = checkIsUsingDarkTheme(resources)
@@ -107,9 +108,11 @@ class ListUserAndFavoriteFragment : Fragment() {
 
         viewLifecycleOwner.collectChannelFlowOnLifecycleStarted(viewModel.uiEvent) {
             if (it is UIEvent.ToastMessageEvent) {
-                toastMessage?.cancel()
-                toastMessage = makeToast(requireActivity(), it.message)
-                toastMessage?.show()
+                toastMessageWeakReference.get()?.cancel()
+                toastMessageWeakReference.clear()
+                toastMessageWeakReference = WeakReference(makeToast(requireActivity(), it.message))
+                toastMessageWeakReference.get()?.show()
+
             }
         }
 
@@ -122,6 +125,7 @@ class ListUserAndFavoriteFragment : Fragment() {
 
         requireActivity().onBackPressedDispatcher.addCallback(onBackPressedCallback)
     }
+
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
@@ -140,6 +144,7 @@ class ListUserAndFavoriteFragment : Fragment() {
             }
         }
     }
+
 
     private fun setUpComponents() {
         setUpSearchView()
@@ -175,7 +180,7 @@ class ListUserAndFavoriteFragment : Fragment() {
         }
     }
 
-    private val searchViewTransitionListener = SearchView.TransitionListener { searchView, previousState, newState ->
+    private val searchViewTransitionListener = SearchView.TransitionListener { _, _, newState ->
         val isSearchViewVisible = newState == SearchView.TransitionState.SHOWN
         binding?.apply {
             searchBar.isVisible = !isSearchViewVisible
@@ -189,6 +194,10 @@ class ListUserAndFavoriteFragment : Fragment() {
                 importantForAccessibility = SearchView.IMPORTANT_FOR_ACCESSIBILITY_NO
                 setModalForAccessibility(false)
 
+                if(viewModel.hasNavigatedToDetail){
+                    searchView.show()
+                    viewModel.hasNavigatedToDetail = false
+                }
 
                 binding?.searchView?.addTransitionListener(searchViewTransitionListener)
 
@@ -225,6 +234,8 @@ class ListUserAndFavoriteFragment : Fragment() {
                 setOnMenuItemClickListener { selectedMenuItem ->
                     when (selectedMenuItem.itemId) {
                         R.id.menu_favorite -> {
+                            //toastMessage = null
+                            toastMessageWeakReference.clear()
                             viewModel.sendAction(MainUiAction.ChangeMode)
                         }
                     }
@@ -322,10 +333,12 @@ class ListUserAndFavoriteFragment : Fragment() {
 
     override fun onDestroyView() {
         binding?.apply {
+            toastMessageWeakReference.get()?.cancel()
+            toastMessageWeakReference.clear()
+
 
             popUpBinding = null
             popupWindow = null
-            toastMessage = null
             adapter = null
 
             searchView.editText.removeTextChangedListener(searchEditTextChangedListener)
@@ -340,12 +353,12 @@ class ListUserAndFavoriteFragment : Fragment() {
     }
 
     private fun toDetailAct(username: String) {
-        willNavigateToDetail = true
+        viewModel.hasNavigatedToDetail = true
         val direction =
             ListUserAndFavoriteFragmentDirections.actionListUserAndFavoriteFragmentToDetailUserFragment(
                 username
             )
         view?.findNavController()?.navigate(direction)
-
     }
+
 }
