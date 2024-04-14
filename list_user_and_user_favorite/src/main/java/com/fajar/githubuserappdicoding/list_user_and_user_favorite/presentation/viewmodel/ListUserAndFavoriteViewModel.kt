@@ -38,9 +38,7 @@ class ListUserAndFavoriteViewModel @Inject constructor(
     private val changeThemePrefUseCase: ChangeThemePrefUseCase,
     checkIsThemeDarkUseCase: CheckIsThemeDarkUseCase
 ) : ViewModel() {
-    companion object {
-        private const val DELAY_MILLIS = 500L
-    }
+
 
     var hasNavigatedToDetail:Boolean = false
 
@@ -230,6 +228,10 @@ class ListUserAndFavoriteViewModel @Inject constructor(
                 action?.let { onAction(it) }
             }
         }
+    }
+
+    companion object {
+        private const val DELAY_MILLIS = 500L
     }
 
 }

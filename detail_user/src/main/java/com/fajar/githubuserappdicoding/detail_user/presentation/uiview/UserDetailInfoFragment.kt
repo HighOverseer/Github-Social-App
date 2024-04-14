@@ -34,10 +34,6 @@ class UserDetailInfoFragment : Fragment() {
         GenericSavedStateViewModelFactory(factory, this, arguments)
     }
 
-    companion object {
-        const val EXTRA_POSITION = "position"
-    }
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         initDI(requireActivity()).inject(this)
@@ -85,5 +81,10 @@ class UserDetailInfoFragment : Fragment() {
         super.onDestroyView()
         binding = null
     }
+
+    companion object {
+        const val EXTRA_POSITION = "position"
+    }
+
 
 }

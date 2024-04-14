@@ -45,10 +45,6 @@ class DetailFragment : Fragment() {
     private lateinit var tabLayoutMediator: TabLayoutMediator
 
 
-    companion object {
-        const val EXTRA_USER = "extra_user"
-    }
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         initDI(requireActivity()).inject(this)
@@ -167,5 +163,11 @@ class DetailFragment : Fragment() {
             }
         }
     }
+
+
+    companion object {
+        const val EXTRA_USER = "extra_user"
+    }
+
 
 }
