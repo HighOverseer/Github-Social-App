@@ -59,7 +59,7 @@ class ListUserAndFavoriteFragment : Fragment() {
     private var popUpBinding: SwitchMenuLayoutBinding? = null
     private var popupWindow: PopupWindow? = null
     private var searchEditTextChangedListener: TextWatcher? = null
-    private var toastMessageWeakReference:WeakReference<Toast?> = WeakReference(null)
+    private var toastMessageWeakReference: WeakReference<Toast?> = WeakReference(null)
 
 
     override fun onAttach(context: Context) {
@@ -96,7 +96,7 @@ class ListUserAndFavoriteFragment : Fragment() {
         viewLifecycleOwner.collectLatestOnLifeCycleStarted(viewModel.themeState) { isDarkTheme ->
             val isAlreadyDarkTheme = checkIsUsingDarkTheme(resources)
             if (isDarkTheme != isAlreadyDarkTheme) {
-                //prevent leaks
+
                 popupWindow?.dismiss()
                 popUpBinding = null
 
@@ -192,7 +192,7 @@ class ListUserAndFavoriteFragment : Fragment() {
                 importantForAccessibility = SearchView.IMPORTANT_FOR_ACCESSIBILITY_NO
                 setModalForAccessibility(false)
 
-                if(viewModel.hasNavigatedToDetail){
+                if (viewModel.hasNavigatedToDetail) {
                     searchView.show()
                     viewModel.hasNavigatedToDetail = false
                 }
@@ -232,7 +232,7 @@ class ListUserAndFavoriteFragment : Fragment() {
                 setOnMenuItemClickListener { selectedMenuItem ->
                     when (selectedMenuItem.itemId) {
                         R.id.menu_favorite -> {
-                            //toastMessage = null
+
                             toastMessageWeakReference.clear()
                             viewModel.sendAction(MainUiAction.ChangeMode)
                         }

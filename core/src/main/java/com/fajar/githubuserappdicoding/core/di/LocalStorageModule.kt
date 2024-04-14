@@ -24,7 +24,7 @@ class LocalStorageModule {
     @Singleton
     @Provides
     fun provideDatabase(@ApplicationContext context: Context): Database {
-        val passphrase:ByteArray = SQLiteDatabase.getBytes(
+        val passphrase: ByteArray = SQLiteDatabase.getBytes(
             context.getString(R.string.app_name).toCharArray()
         )
         val factory = SupportFactory(passphrase)

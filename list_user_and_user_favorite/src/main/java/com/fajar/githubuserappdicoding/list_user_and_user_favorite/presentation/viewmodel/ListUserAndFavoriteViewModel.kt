@@ -40,7 +40,7 @@ class ListUserAndFavoriteViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    var hasNavigatedToDetail:Boolean = false
+    var hasNavigatedToDetail: Boolean = false
 
     val themeState = checkIsThemeDarkUseCase
         .invoke()
