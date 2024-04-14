@@ -27,13 +27,13 @@ class SplashFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (activity as MainActivity).setSystemBarVisibility(false)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        (activity as MainActivity).setSystemBarVisibility(false)
         return inflater.inflate(R.layout.fragment_splash, container, false)
     }
 

@@ -63,11 +63,9 @@ class ListUserAndFavoriteFragment : Fragment() {
     private var toastMessageWeakReference:WeakReference<Toast?> = WeakReference(null)
 
 
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         initDI(requireActivity()).inject(this)
-        (activity as MainActivity).setSystemBarVisibility(true)
     }
 
 
@@ -75,6 +73,7 @@ class ListUserAndFavoriteFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        (activity as MainActivity).setSystemBarVisibility(true)
         binding = FragmentListUserAndFavoriteBinding.inflate(
             inflater,
             container,
