@@ -1,7 +1,6 @@
 package com.fajar.githubuserappdicoding.list_user_and_user_favorite.presentation.uiview
 
 import android.content.Context
-import android.content.res.Configuration
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher

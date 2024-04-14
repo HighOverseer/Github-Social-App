@@ -36,12 +36,6 @@ class LocalStorageModule {
         ).fallbackToDestructiveMigration()
             .openHelperFactory(factory)
             .build()
-
-        /*return Room.databaseBuilder(
-            context,
-            Database::class.java,
-            "database"
-        ).build()*/
     }
 
     @Provides

@@ -25,6 +25,7 @@ class UserDetailInfoVM(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
+
     private val username =
         savedStateHandle.get<String>(DetailFragment.EXTRA_USER)
             ?: throw Exception("Terjadi Kesalahan..")
@@ -35,7 +36,7 @@ class UserDetailInfoVM(
     val uiEvent = _uiEvent.receiveAsFlow()
 
     val uiState =
-        getUserReposOrFollowingOrFollowerUseCase(username, getType(pos)).map { res ->
+        getUserReposOrFollowingOrFollowerUseCase.invoke(username, getType(pos)).map { res ->
             setData(res)
         }.flowOn(Dispatchers.Default).stateIn(
             viewModelScope,

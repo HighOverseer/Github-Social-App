@@ -17,7 +17,7 @@ class SplashViewModel @Inject constructor(
     checkIsThemeDarkUseCase: CheckIsThemeDarkUseCase
 ) : ViewModel() {
 
-    val isDarkThemeFlow = checkIsThemeDarkUseCase()
+    val isDarkThemeFlow = checkIsThemeDarkUseCase.invoke()
         .distinctUntilChanged()
 
     private val _uiEvent = Channel<UIEvent>()

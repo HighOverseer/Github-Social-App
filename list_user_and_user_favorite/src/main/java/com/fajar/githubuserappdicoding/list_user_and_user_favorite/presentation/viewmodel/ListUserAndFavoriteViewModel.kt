@@ -42,7 +42,8 @@ class ListUserAndFavoriteViewModel @Inject constructor(
 
     var hasNavigatedToDetail:Boolean = false
 
-    val themeState = checkIsThemeDarkUseCase()
+    val themeState = checkIsThemeDarkUseCase
+        .invoke()
         .distinctUntilChanged()
 
     private val uiAction = Channel<MainUiAction?>()
@@ -121,7 +122,7 @@ class ListUserAndFavoriteViewModel @Inject constructor(
 
     private suspend fun changeThemePref() {
         withContext(NonCancellable) {
-            changeThemePrefUseCase()
+            changeThemePrefUseCase.invoke()
         }
     }
 
@@ -178,7 +179,7 @@ class ListUserAndFavoriteViewModel @Inject constructor(
     }
 
     private fun onSearchResult(isInFavoriteList: Boolean, query: String = ""): Flow<MainUIState> {
-        return searchUserUseCase(isInFavoriteList, query).map { res ->
+        return searchUserUseCase.invoke(isInFavoriteList, query).map { res ->
             when (res) {
                 is Resource.Success -> {
                     uiState.value.copy(

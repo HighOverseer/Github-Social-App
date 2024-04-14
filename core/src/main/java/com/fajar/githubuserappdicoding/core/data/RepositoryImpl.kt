@@ -36,9 +36,9 @@ class RepositoryImpl @Inject constructor(
     ): Flow<Resource<S>> = flow {
         try {
 
-            val data = fetch()
+            val data = fetch.invoke()
 
-            val result = mapData(data)
+            val result = mapData.invoke(data)
 
             emit(
                 Resource.Success(

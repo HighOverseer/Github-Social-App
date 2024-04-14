@@ -1,6 +1,5 @@
 package com.fajar.githubuserappdicoding.presentation
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,10 +23,6 @@ import kotlinx.coroutines.launch
 class SplashFragment : Fragment() {
 
     private val viewModel: SplashViewModel by viewModels()
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

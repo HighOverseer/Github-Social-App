@@ -124,7 +124,3 @@ public *;
  ##---------------Begin: proguard configuration for SQLCipher  ----------
  -keep,includedescriptorclasses class net.sqlcipher.** { *; }
  -keep,includedescriptorclasses interface net.sqlcipher.** { *; }
-
-
- #StringConcatFactory
- -dontwarn java.lang.invoke.StringConcatFactory

@@ -36,8 +36,8 @@ class DetailVM(
     val uiEvent = _uiEvent.receiveAsFlow()
 
     val uiState: StateFlow<DetailUiState> = combine(
-        getDetailUserUseCase(username),
-        checkIsUserInFavoriteUseCase(username)
+        getDetailUserUseCase.invoke(username),
+        checkIsUserInFavoriteUseCase.invoke(username)
     ) { resDetailUser, isFavorite ->
         setUserProfile(resDetailUser, isFavorite)
     }.flowOn(Dispatchers.Default).stateIn(
@@ -100,7 +100,7 @@ class DetailVM(
             val currUiState = uiState.value
             _uiEvent.send(
                 UIEvent.ToastMessageEvent(
-                    toggleFavoriteStatusUseCase(
+                    toggleFavoriteStatusUseCase.invoke(
                         currUiState.userProfile,
                         currUiState.isUserFavorite
                     )

@@ -21,7 +21,7 @@ class ListUserAdapter(
 
         init {
             itemView.setOnClickListener {
-                clickedAtPosition(adapterPosition)
+                clickedAtPosition.invoke(adapterPosition)
             }
         }
     }
@@ -30,7 +30,7 @@ class ListUserAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val binding = ItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return UserViewHolder(binding) { adapterPosition ->
-            onItemGetClicked(getItem(adapterPosition).username)
+            onItemGetClicked.invoke(getItem(adapterPosition).username)
         }
     }
 
