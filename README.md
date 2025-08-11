@@ -4,6 +4,10 @@ An advanced Android application for exploring GitHub profiles with enhanced secu
 
 *Demonstrating expert-level Android development with enterprise-grade security and architecture*
 
+<p align="center">
+<img width="1920" height="1080" alt="Modern App Portfolio Mockup Presentation-5" src="https://github.com/user-attachments/assets/ed61bfaa-9c98-4adb-9151-dd183752c3e0" />
+</p>
+
 ## 🎯 Overview
 
 GitHub Social App transforms the way users discover and manage GitHub profiles through an intuitive mobile interface. Built with cutting-edge Android development practices, the app showcases advanced concepts including modularization, security hardening, performance optimization, and continuous integration.
