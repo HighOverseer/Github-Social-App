@@ -8,7 +8,7 @@ jobs:
     executor:
       name: android/android-machine
       resource-class: large
-      tag: default
+      tag: '2023.08.1'
     steps:
       - checkout
       - restore_cache:
